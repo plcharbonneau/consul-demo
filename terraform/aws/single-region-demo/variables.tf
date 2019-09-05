@@ -32,7 +32,7 @@ variable "top_level_domain" {
 
 # Optional
 
-# Images currently exist in us-east-1 and us-west-2
+# Images in us-east-1, us-east-2, us-west-1 and us-west-2
 variable "aws_region" {
   description = "Region into which to deploy"
   default     = "us-west-2"
