@@ -6,19 +6,19 @@
         "aws_access_key": "{{ env `AWS_ACCESS_KEY` }}",
         "aws_secret_key": "{{ env `AWS_SECRET_KEY` }}",
         "aws_region": "{{ env `AWS_REGION` }}",
-        "role": "consul-server",
+        "role": "consul-client-webclient",
         "ami_owner": "{{ env `AMI_OWNER` }}",
         "owner_tag": "rpeteuil@hashicorp.com",
         "proj_suffix_tag": "Q3-2019",
-        "type": "server",
+        "type": "{{ env `NODE_TYPE` }}",
         "consul_version": "{{ env `CONSUL_VER` }}"
     },
     "builders": [{
-            "image_name": "cc-demo-consul-{{ user `type` }}",
+            "image_name": "cc-demo-consul-{{ user `type` }}-webclient",
             "type": "googlecompute",
             "account_file": "{{ user `gcp_account_file` }}",
             "project_id": "{{ user `gcp_project_id` }}",
-            "source_image": "cc-demo-consul-base",
+            "source_image": "cc-demo-consul-client",
             "ssh_username": "ubuntu",
             "machine_type": "n1-standard-1",
             "zone": "{{ user `gcp_zone` }}",
@@ -40,9 +40,9 @@
             },
             "instance_type": "t2.micro",
             "ssh_username": "ubuntu",
-            "ami_name": "cc-demo-consul-server-{{timestamp}}",
+            "ami_name": "cc-demo-webclient-{{timestamp}}",
             "tags": {
-                "Name": "CC Demo Ubuntu Consul Server",
+                "Name": "CC Demo Ubuntu Webclient",
                 "owner": "{{ user `owner_tag` }}",
                 "project": "CC Demo {{ user `proj_suffix_tag` }}",
                 "Base_AMI_Name": "{{ .SourceAMIName }}",
@@ -54,30 +54,43 @@
     ],
     "provisioners": [{
             "type": "file",
-            "source": "files/server.hcl",
-            "destination": "/tmp/server.hcl"
+            "source": "files/install_webclient.sh",
+            "destination": "/tmp/install_webclient.sh"
         },
         {
             "type": "file",
-            "source": "files/consul_license.py",
-            "destination": "/tmp/consul_license.py"
+            "source": "services/web_client.hcl",
+            "destination": "/tmp/web_client.hcl"
         },
         {
             "type": "file",
-            "source": "files/consul_license.service",
-            "destination": "/tmp/consul_license.service"
+            "source": "files/web_client.service",
+            "destination": "/tmp/web_client.service"
+        },
+        {
+            "type": "file",
+            "source": "files/web_client_proxy.service",
+            "destination": "/tmp/web_client_proxy.service"
+        },
+        {
+            "type": "file",
+            "source": "demoscripts/webclient/",
+            "destination": "/home/ubuntu"
         },
         {
             "type": "shell",
             "inline": [
-                "sleep 15",
-                "sudo mv /tmp/server.hcl /etc/consul/server.hcl",
-                "sudo install -o root -g root -m 555 /tmp/consul_license.py /usr/local/bin/consul_license",
-                "sudo install -o root -g root -m 444 /tmp/consul_license.service /lib/systemd/system/consul_license.service",
-                "sudo rm -f /tmp/consul_license.*",
+                "sudo chmod a+x /tmp/install_webclient.sh",
+                "sudo /tmp/install_webclient.sh",
+                "sudo rm -f /tmp/install_webclient.sh",
+                "sudo mv /tmp/web_client.hcl /etc/consul/web_client.hcl",
+                "sudo mv /tmp/web_client.service /lib/systemd/system/web_client.service",
+                "sudo mv /tmp/web_client_proxy.service /lib/systemd/system/web_client_proxy.service",
+                "sudo chown -R consul:consul /etc/consul",
                 "sudo systemctl daemon-reload",
-                "sudo systemctl enable consul.service",
-                "sudo systemctl enable consul_license.service",
+                "sudo systemctl enable consul",
+                "sudo systemctl enable web_client.service",
+                "sudo systemctl enable web_client_proxy.service",
                 "sudo rm -rf /opt/consul/*"
             ]
         }

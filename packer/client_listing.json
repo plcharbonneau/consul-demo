@@ -6,19 +6,19 @@
         "aws_access_key": "{{ env `AWS_ACCESS_KEY` }}",
         "aws_secret_key": "{{ env `AWS_SECRET_KEY` }}",
         "aws_region": "{{ env `AWS_REGION` }}",
-        "role": "consul-server",
+        "role": "consul-client-listing",
         "ami_owner": "{{ env `AMI_OWNER` }}",
         "owner_tag": "rpeteuil@hashicorp.com",
         "proj_suffix_tag": "Q3-2019",
-        "type": "server",
+        "type": "{{ env `NODE_TYPE` }}",
         "consul_version": "{{ env `CONSUL_VER` }}"
     },
     "builders": [{
-            "image_name": "cc-demo-consul-{{ user `type` }}",
+            "image_name": "cc-demo-consul-{{ user `type` }}-listing",
             "type": "googlecompute",
             "account_file": "{{ user `gcp_account_file` }}",
             "project_id": "{{ user `gcp_project_id` }}",
-            "source_image": "cc-demo-consul-base",
+            "source_image": "cc-demo-consul-client",
             "ssh_username": "ubuntu",
             "machine_type": "n1-standard-1",
             "zone": "{{ user `gcp_zone` }}",
@@ -40,9 +40,9 @@
             },
             "instance_type": "t2.micro",
             "ssh_username": "ubuntu",
-            "ami_name": "cc-demo-consul-server-{{timestamp}}",
+            "ami_name": "cc-demo-listing-server-{{timestamp}}",
             "tags": {
-                "Name": "CC Demo Ubuntu Consul Server",
+                "Name": "CC Demo Ubuntu Listing Server",
                 "owner": "{{ user `owner_tag` }}",
                 "project": "CC Demo {{ user `proj_suffix_tag` }}",
                 "Base_AMI_Name": "{{ .SourceAMIName }}",
@@ -54,30 +54,43 @@
     ],
     "provisioners": [{
             "type": "file",
-            "source": "files/server.hcl",
-            "destination": "/tmp/server.hcl"
+            "source": "files/install_node.sh",
+            "destination": "/tmp/install_node.sh"
         },
         {
             "type": "file",
-            "source": "files/consul_license.py",
-            "destination": "/tmp/consul_license.py"
+            "source": "services/listing.hcl",
+            "destination": "/tmp/listing.hcl"
         },
         {
             "type": "file",
-            "source": "files/consul_license.service",
-            "destination": "/tmp/consul_license.service"
+            "source": "files/listing.service",
+            "destination": "/tmp/listing.service"
+        },
+        {
+            "type": "file",
+            "source": "files/listing_proxy.service",
+            "destination": "/tmp/listing_proxy.service"
+        },
+        {
+            "type": "file",
+            "source": "demoscripts/listing/",
+            "destination": "/home/ubuntu"
         },
         {
             "type": "shell",
             "inline": [
-                "sleep 15",
-                "sudo mv /tmp/server.hcl /etc/consul/server.hcl",
-                "sudo install -o root -g root -m 555 /tmp/consul_license.py /usr/local/bin/consul_license",
-                "sudo install -o root -g root -m 444 /tmp/consul_license.service /lib/systemd/system/consul_license.service",
-                "sudo rm -f /tmp/consul_license.*",
+                "sudo chmod a+x /tmp/install_node.sh",
+                "sudo /tmp/install_node.sh",
+                "sudo rm -f /tmp/install_node.sh",
+                "sudo mv /tmp/listing.hcl /etc/consul/listing.hcl",
+                "sudo mv /tmp/listing.service /lib/systemd/system/listing.service",
+                "sudo mv /tmp/listing_proxy.service /lib/systemd/system/listing_proxy.service",
+                "sudo chown -R consul:consul /etc/consul",
                 "sudo systemctl daemon-reload",
-                "sudo systemctl enable consul.service",
-                "sudo systemctl enable consul_license.service",
+                "sudo systemctl enable consul",
+                "sudo systemctl enable listing.service",
+                "sudo systemctl enable listing_proxy.service",
                 "sudo rm -rf /opt/consul/*"
             ]
         }

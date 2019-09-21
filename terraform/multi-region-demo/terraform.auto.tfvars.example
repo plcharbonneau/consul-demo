@@ -1,0 +1,41 @@
+# Rename this to `terraform.auto.tfvars` and edit.
+# You should set all of the variables.
+# In particular, 'project_name' and 'hashi_tags["owner"]' 
+# combined set the Consul 'cluster name' which the cloud
+# auto-join uses --- if you want to run more than one instance
+# of this in a single AWS account, you'll need to make these
+# distinct to keep the instances separate.
+
+# Main Consul Cluster region and DC Name
+aws_region = "us-east-1"
+consul_dc  = "dc1"
+
+# Alternate Consul Cluster region and unique DC Name
+aws_region_alt = "us-west-2"
+consul_dc_alt  = "dc2"
+
+# Unique Project Name
+project_name = "thomas-cc-demo"
+
+hashi_tags = {
+  "project" = "Thomas Consul Connect Demo"
+  "owner"   = "thomas@hashicorp.com"
+  "TTL"     = "48"
+}
+
+# Name of existing SSH Keypair in AWS Region
+# https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html
+ssh_key_name = "thomas-yubikey"
+
+# Private SSH key that is referenced by ssh_key_name variable
+#   if not defined, the counsul datacenters will not be joined in post provisioning
+ssh_pri_key_file = "~/.ssh/id_rsa"
+
+# zone ID for TLD
+route53_zone_id = "ZZZZZZZZZZZZZZ"
+
+# TLD to register nodes and lb in
+top_level_domain = "test.example.com"
+
+# Consul Enterprise License Key (if exists)
+# consul_lic = "consul-enterprise-license-string-here"
