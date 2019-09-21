@@ -1,7 +1,5 @@
 # Consul Connect Demo
 
-An incredibly modified version of <thomashashi/thomas_cc_demo>
-
 This repo can be used to show Consul service discovery, Consul Connect, intentions and service failover between datacenters (via prepared query)
 
 ## Demo Variants
