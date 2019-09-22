@@ -18,10 +18,6 @@ variable "ssh_key_name" {
   description = "Name of existing AWS ssh key"
 }
 
-variable "consul_dc" {
-  description = "Consul cluster DC name"
-}
-
 variable "route53_zone_id" {
   description = "Route 53 zone into which to place hostnames"
 }
@@ -36,6 +32,11 @@ variable "top_level_domain" {
 variable "aws_region" {
   description = "Region into which to deploy"
   default     = "us-west-2"
+}
+
+variable "consul_dc" {
+  description = "Consul cluster DC name"
+  default     = "dc1"
 }
 
 variable "consul_lic" {

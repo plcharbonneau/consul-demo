@@ -14,26 +14,8 @@ variable "hashi_tags" {
   }
 }
 
-variable "vpc_cidr_main" {
-  description = "The netblock for the main VPC"
-  default     = "10.0.0.0/16"
-}
-
-variable "vpc_cidr_alt" {
-  description = "The netblock for the alt VPC"
-  default     = "10.128.0.0/16"
-}
-
 variable "ssh_key_name" {
   description = "Name of existing AWS ssh key"
-}
-
-variable "consul_dc" {
-  description = "Consul cluster DC name"
-}
-
-variable "consul_dc_alt" {
-  description = "Alternate Consul cluster DC name"
 }
 
 variable "ssh_pri_key_file" {
@@ -57,15 +39,35 @@ variable "aws_region" {
   default     = "us-west-2"
 }
 
+variable "consul_dc" {
+  description = "Consul cluster DC name"
+  default     = "dc1"
+}
+
 # Region to deploy alternate cluster
 variable "aws_region_alt" {
   description = "Region into which to deploy"
   default     = "us-east-1"
 }
 
+variable "consul_dc_alt" {
+  description = "Alternate Consul cluster DC name"
+  default     = "dc2"
+}
+
 variable "consul_lic" {
   description = "License file content for Consul Enterprise"
   default     = ""
+}
+
+variable "vpc_cidr_main" {
+  description = "The netblock for the main VPC"
+  default     = "10.0.0.0/16"
+}
+
+variable "vpc_cidr_alt" {
+  description = "The netblock for the alt VPC"
+  default     = "10.128.0.0/16"
 }
 
 # variable "server_machine_type" {

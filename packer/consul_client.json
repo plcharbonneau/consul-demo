@@ -8,17 +8,18 @@
         "aws_region": "{{ env `AWS_REGION` }}",
         "role": "consul-client",
         "ami_owner": "{{ env `AMI_OWNER` }}",
+        "ami_prefix": "{{ env `AMI_PREFIX` }}",
         "owner_tag": "rpeteuil@hashicorp.com",
         "proj_suffix_tag": "Q3-2019",
         "type": "{{ env `NODE_TYPE` }}",
         "consul_version": "{{ env `CONSUL_VER` }}"
     },
     "builders": [{
-            "image_name": "cc-demo-consul-client",
+            "image_name": "{{ user `ami_prefix` }}-consul-client",
             "type": "googlecompute",
             "account_file": "{{ user `gcp_account_file` }}",
             "project_id": "{{ user `gcp_project_id` }}",
-            "source_image": "cc-demo-consul-base",
+            "source_image": "{{ user `ami_prefix` }}-consul-base",
             "ssh_username": "ubuntu",
             "machine_type": "n1-standard-1",
             "zone": "{{ user `gcp_zone` }}",
@@ -32,7 +33,7 @@
             "source_ami_filter": {
                 "filters": {
                     "virtualization-type": "hvm",
-                    "name": "cc-demo-consul-base-*",
+                    "name": "{{ user `ami_prefix` }}-consul-base-*",
                     "root-device-type": "ebs"
                 },
                 "owners": ["{{ user `ami_owner` }}"],
@@ -40,11 +41,11 @@
             },
             "instance_type": "t2.micro",
             "ssh_username": "ubuntu",
-            "ami_name": "cc-demo-consul-client-{{timestamp}}",
+            "ami_name": "{{ user `ami_prefix` }}-consul-client-{{timestamp}}",
             "tags": {
-                "Name": "CC Demo Ubuntu Consul Client",
+                "Name": "Consul Demo Ubuntu Consul Client",
                 "owner": "{{ user `owner_tag` }}",
-                "project": "CC Demo {{ user `proj_suffix_tag` }}",
+                "project": "Consul Demo {{ user `proj_suffix_tag` }}",
                 "Base_AMI_Name": "{{ .SourceAMIName }}",
                 "Base_AMI": "{{ .SourceAMI }}",
                 "consul_version": "{{ user `consul_version` }}",

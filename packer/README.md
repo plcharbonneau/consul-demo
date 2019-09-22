@@ -5,7 +5,12 @@ The code which built all of the images is in the `packer` directory. The Packer 
 The images can be built by following these steps:
 
 - `cd packer`
-- export the AWS_REGION you want to build the images in with command
+- edit `Makefile` and adjust variables
+  - `AMI_OWNER` - specifies AWS AMI owner ID
+  - `CONSUL_VER` - version of Consul to build into AMIs
+  - `AMI_PREFIX` - default "consul-demo"
+    - if changed, new value must be specified in Terraform code using `ami_prefix` parameter for `consul-demo-cluster` module
+- export the AWS_REGION to build AMIs
   - `export AWS_REGION="us-west-2"`
 - view & edit the packer templates (`.json` files in packer directory)
   - adjust variables defined at the beginning of each template
