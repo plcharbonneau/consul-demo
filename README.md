@@ -203,7 +203,7 @@ Notes for multi-region demo:
 
 - Show Web Client web page, and point out its communicating with Listing & Product
 - Open Consul UI and select Intentions tab
-- Create an Intention from `*` to `*` of type `Deny` and click save
+  - Create an Intention from `*` to `*` of type `Deny` and click save
 - Show Web Client web page and point out it cant communicate with Listing or Product
 - Switch back to Consul Intentions UI
   - Create Intention from `web_client` to `listing` of type `Allow` and click save
