@@ -1,7 +1,7 @@
 ENCRYPT_CONFIG := files/encrypt.hcl
 
 AMI_OWNER=753646501470
-CONSUL_VER="1.6.0"
+CONSUL_VER="1.6.1"
 
 DEFAULT:
 	@echo Run 'make aws' to build appropriate images
