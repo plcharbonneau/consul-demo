@@ -9,11 +9,12 @@
         "role": "consul-base",
         "type": "{{ env `NODE_TYPE` }}",
         "owner_tag": "rpeteuil@hashicorp.com",
+        "ami_prefix": "{{ env `AMI_PREFIX` }}",
         "proj_suffix_tag": "Q3-2019",
         "consul_version": "{{ env `CONSUL_VER` }}"
     },
     "builders": [{
-            "image_name": "cc-demo-consul-base",
+            "image_name": "{{ user `ami_prefix` }}-consul-base",
             "type": "googlecompute",
             "account_file": "{{ user `gcp_account_file` }}",
             "project_id": "{{ user `gcp_project_id` }}",
@@ -39,11 +40,11 @@
             },
             "instance_type": "t2.micro",
             "ssh_username": "ubuntu",
-            "ami_name": "cc-demo-consul-base-{{timestamp}}",
+            "ami_name": "{{ user `ami_prefix` }}-consul-base-{{timestamp}}",
             "tags": {
-                "Name": "CC Demo Ubuntu Consul Base",
+                "Name": "Consul Demo Ubuntu Consul Base",
                 "owner": "{{ user `owner_tag` }}",
-                "project": "CC Demo {{ user `proj_suffix_tag` }}",
+                "project": "Consul Demo {{ user `proj_suffix_tag` }}",
                 "Base_AMI_Name": "{{ .SourceAMIName }}",
                 "Base_AMI": "{{ .SourceAMI }}",
                 "consul_version": "{{ user `consul_version` }}",

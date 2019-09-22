@@ -38,7 +38,7 @@ variable "top_level_domain" {
 
 variable "ami_prefix" {
   description = "prefix of AMI images to use when building instances"
-  default     = "cc-demo"
+  default     = "consul-demo"
 }
 
 variable "server_machine_type" {
