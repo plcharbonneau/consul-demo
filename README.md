@@ -192,10 +192,10 @@ Notes for multi-region demo:
 > By configuring `product` to listen only on `localhost`, you've reduced the security boundary to individual server instances --- all network traffic is _encrypted_.
 > Only steps necessary to enable existing application to configure Consul Connect and  _configure app to communicate to port on localhost_.
 
-  1.`product` knows _nothing_ about TLS
-  2.`product` knows _nothing_ about mutual-TLS authentication
-  3.`product` doesn't have to manage certificates, keys, CRLs, CA certs...
-  4.`product` simply sees _simple, unencrypted traffic_ coming to it
+  1. `product` knows _nothing_ about TLS
+  2. `product` knows _nothing_ about mutual-TLS authentication
+  3. `product` doesn't have to manage certificates, keys, CRLs, CA certs...
+  4. `product` simply sees _simple, unencrypted traffic_ coming to it
 
 #### Intentions
 
