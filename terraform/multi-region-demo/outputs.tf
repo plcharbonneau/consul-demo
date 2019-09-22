@@ -76,8 +76,9 @@ output "working_connections" {
     Consul GUI  http://${module.cluster_main.consul_lb}
 
   CONNECT IN TERMINAL TABS:
-    ssh ubuntu@${element(module.cluster_main.listing_api_servers, 0)}
-    ssh ubuntu@${element(module.cluster_main.webclient_servers, 0)}
+    mongodb     ssh ubuntu@${element(module.cluster_main.mongo_servers, 0)}
+    listing     ssh ubuntu@${element(module.cluster_main.listing_api_servers, 0)}
+    webclient   ssh ubuntu@${element(module.cluster_main.webclient_servers, 0)}
 
 EOF
 }
