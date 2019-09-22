@@ -4,7 +4,6 @@ packer/binaries/*
 packer/files/encrypt.hcl
 packer/.built*
 env.sh
-terraform/gcp/terraform.tf*
 .terraform/
 terraform.tfstate
 terraform.tfstate.backup
@@ -13,4 +12,3 @@ terraform.auto.tfvars
 
 # Include binaries folder
 !packer/binaries/.gitkeep
-terraform/gcp/.terraform
