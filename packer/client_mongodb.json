@@ -69,6 +69,11 @@
             "destination": "/tmp/mongod.conf"
         },
         {
+            "type": "file",
+            "source": "demoscripts/mongodb/",
+            "destination": "/home/ubuntu"
+        },
+        {
             "type": "shell",
             "inline": [
                 "sudo chmod a+x /tmp/install_mongodb.sh",
