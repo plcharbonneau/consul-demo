@@ -7,7 +7,7 @@ data "aws_ami" "consul" {
 
   filter {
     name   = "name"
-    values = ["cc-demo-consul-server-*"]
+    values = ["${var.ami_prefix}-consul-server-*"]
   }
 }
 
@@ -32,7 +32,7 @@ data "aws_ami" "webclient" {
 
   filter {
     name   = "name"
-    values = ["cc-demo-webclient-*"]
+    values = ["${var.ami_prefix}-webclient-*"]
   }
 }
 
@@ -58,7 +58,7 @@ data "aws_ami" "listing-api" {
 
   filter {
     name   = "name"
-    values = ["cc-demo-listing-server-*"]
+    values = ["${var.ami_prefix}-listing-server-*"]
   }
 }
 
@@ -84,7 +84,7 @@ data "aws_ami" "product-api" {
 
   filter {
     name   = "name"
-    values = ["cc-demo-product-*"]
+    values = ["${var.ami_prefix}-product-*"]
   }
 }
 
@@ -110,7 +110,7 @@ data "aws_ami" "mongo" {
 
   filter {
     name   = "name"
-    values = ["cc-demo-mongodb-*"]
+    values = ["${var.ami_prefix}-mongodb-*"]
   }
 }
 

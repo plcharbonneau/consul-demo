@@ -36,6 +36,11 @@ variable "top_level_domain" {
 
 # Optional
 
+variable "ami_prefix" {
+  description = "prefix of AMI images to use when building instances"
+  default     = "cc-demo"
+}
+
 variable "server_machine_type" {
   description = "The machine type (size) to deploy"
   default     = "t2.micro"
