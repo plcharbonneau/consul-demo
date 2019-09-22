@@ -40,8 +40,8 @@ This repo can be used to show Consul service discovery, Consul Connect, intentio
 
 Notes for multi-region demo:
 
-- `ssh_key_name` - must exist with the same name in both regions; by default us-west-2 and us-east-1, unless other regions specified in `aws_region` and `aws_region_alt`
-- The `ssh_pri_key_file` is used in post-provisioning to ssh into the consul servers and wan join the consul clusters
+- `ssh_key_name` - must exist with this name in both regions (by default us-west-2 and us-east-1)
+- `ssh_pri_key_file` - must point to the location of the file specified in `ssh_key_name`.  It is used in post-provisioning to ssh into the consul servers and wan join the consul clusters
 
 ## Demo Prep
 
