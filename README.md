@@ -46,11 +46,18 @@ This repo can be used to show Consul service discovery, Consul Connect, intentio
 
 Notes for multi-region demo:
 
+> This demo is simplified if you push your system's default ssh key (`~/.ssh/id_rsa.pub`) to the AWS regions used with this demo.
+
+- `reference/push-ssh-key-to-aws.sh` pushes an SSH key of your chosing to every region using the AWS CLI
+  - edit the value of `aws_keypair_name` and `publickeyfile` in the script
+
+> The multi-region terraform code, uses a post provisioner which requires specifying the AWS ssh key name & the content of the private key (via file reference or as a string)
+
 - `ssh_key_name` - must exist with this name in both regions (by default us-west-2 and us-east-1)
-- Must specify either "ssh_pri_key_data" or "ssh_pri_key_file". These refer to the Private SSH key specified in `ssh_key_name` variable
+- Must specify either `ssh_pri_key_data` or `ssh_pri_key_file` so that they refer to the Private SSH key for the key specified in `ssh_key_name`
   - `ssh_pri_key_file` - File URL to private key file (does not work with TFC/TFE)
-  - `ssh_pri_key_data` - contains contents of private key as data (required for TFC/TFE)
-    - remove newlines before populating: `awk '{printf "%s\\n", $0}' ~/.ssh/id_rsa`
+  - `ssh_pri_key_data` - contents of private key as data with newlines replaced with `\n` (required for TFC/TFE)
+    - remove newlines with command: `awk '{printf "%s\\n", $0}' ~/.ssh/id_rsa`
 
 ## Demo Prep
 
@@ -72,7 +79,7 @@ Notes for multi-region demo:
 
 ### Consul Service Discovery
 
-> In order for services to be discoverable via Consul, they first must register
+> In order for services to be discoverable via Consul, they first must register themselves.
 
 #### Service Regitration
 
@@ -251,8 +258,7 @@ Notes for multi-region demo:
 
 ### Datacenter Failover with Prepared Queries - Multi-Region Demo (Only)
 
-> Webclient service is configured to use a "prepared query" to find the `product` service.
-> If every product service in the current DC fails, it looks for the service in other DCs.
+> Webclient service is configured to use a "prepared query" to find the `product` service.  If every product service in the current DC fails, it looks for the service in other DCs.  Additional info on the prepared query can be found in the [prepared_query reference](./reference/prepared_query.md)
 
 - Show Web Client web page
   - point out **Configuration** Section under Product API
