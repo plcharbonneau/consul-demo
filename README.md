@@ -1,4 +1,4 @@
-# Consul Connect Demo
+# Consul Demo
 
 This repo can be used to show Consul service discovery, Consul Connect, intentions and service failover between datacenters (via prepared query)
 
@@ -11,23 +11,29 @@ This repo can be used to show Consul service discovery, Consul Connect, intentio
 
 ## Architecture & Diagrams
 
-- This is a simple [three tier architecture](./diagrams/1-High-Level-Architecture-sm.png)
+- [Simple Three Tier Architecture](./diagrams/1-High-Level-Architecture-sm.png)
   - Front tier: `web_client` service
   - Middle tier: two services `listing` and `product`
   - Back tier: `MongoDB` service
-- Tthe following resources are deployed in each region:
-  - [Deployed Services](./diagrams/2-Deployed-Services-sm.png)
+- [Resources Deployed in each Region](./diagrams/2-Deployed-Services-sm.png)
 - [Consul Configuration Single DC](./diagrams/3-Consul-Config-Single-DC-sm.png)
   - Front Tier to the Middle Tier communicates via Consul Connect
   - Middle Tier to Back Tier Communicates via Service Discovery only
     - Demo begins with Service Discovery by showing connections between Middle & Back Tier
-- Multi Region Configuration:
-  - [Consul Config Multi DC](./diagrams/4-Consul-Config-Multi-DC-sm.png)
+    - Note: Intentions have no effect on the Back Tier, as it's not using Consul Connect
+- [Multi Region Configuration](./diagrams/4-Consul-Config-Multi-DC-sm.png)
+
+> A PowerPoint version and larger versions of these diagrams are included in the `./diagrams` directory
 
 ## Images
 
-- Images are already published in `us-east-1`, `us-east-2`, `us-west-1` and `us-west-2`
-- If you need to customize or publish your own images view the [Packer README](./packer/README.md)
+- Images are published in `us-east-1`, `us-east-2`, `us-west-1` and `us-west-2`
+- If customizing images:
+  - View the [Packer README](./packer/README.md)
+  - Change the AMI name to avoid name conflict with original
+    - set `AMI_PREFIX` value in `packer/Makefile`
+    - set `ami_prefix` terraform variable in `terraform.auto.tfvars`
+  - change `AMI_OWNER` value to your AWS organization ID
 
 ## Setup
 
@@ -41,7 +47,10 @@ This repo can be used to show Consul service discovery, Consul Connect, intentio
 Notes for multi-region demo:
 
 - `ssh_key_name` - must exist with this name in both regions (by default us-west-2 and us-east-1)
-- `ssh_pri_key_file` - must point to the location of the file specified in `ssh_key_name`.  It is used in post-provisioning to ssh into the consul servers and wan join the consul clusters
+- Must specify either "ssh_pri_key_data" or "ssh_pri_key_file". These refer to the Private SSH key specified in `ssh_key_name` variable
+  - `ssh_pri_key_file` - File URL to private key file (does not work with TFC/TFE)
+  - `ssh_pri_key_data` - contains contents of private key as data (required for TFC/TFE)
+    - remove newlines before populating: `awk '{printf "%s\\n", $0}' ~/.ssh/id_rsa`
 
 ## Demo Prep
 
@@ -202,12 +211,28 @@ Notes for multi-region demo:
 > Intention enable defining specific services that each service can communicate.
 
 - Show Web Client web page, and point out its communicating with Listing & Product
+
+> now we'll stop all services (using Consul connect) from communicating.
+
 - Open Consul UI and select Intentions tab
   - Create an Intention from `*` to `*` of type `Deny` and click save
-- Show Web Client web page and point out it cant communicate with Listing or Product
+- Show Web Client web page and point out it cannot communicate with Listing or Product services
+
+> lets allow web_client to communicate with the listing service.
+
 - Switch back to Consul Intentions UI
   - Create Intention from `web_client` to `listing` of type `Allow` and click save
 - Show Web Client web page and point out it can now communicate with Listing
+
+> Intentions also specifying the service that can initiate communications.
+
+- Switch back to Consul Intentions UI
+  - Create Intention from `product` to `web_client` of type `Allow` and click save
+- Show Web Client web page and point out the it still cannot communicate with product
+
+> Now the web_client still cannot talk to product, beccause the intention we added allows product to initiate connections to web_client (not the other way arround).
+> So, lets add a connection that allows web_client to initiate communications with product.
+
 - Switch back to Consul Intentions UI
   - Create Intention from `web_client` to `product` of type `Allow` and click save
 - Show Web Client web page and point out both working again

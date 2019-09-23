@@ -13,20 +13,26 @@ hashi_tags = {
   "TTL"     = "48"
 }
 
-# AWS Keypair in Region - specifies key used when sshing to instance
-#   https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html
-ssh_key_name = "rpeteuil"
-
-# Private SSH key that is referenced by ssh_key_name variable
-#   if not defined, post provisioner cannot join counsul datacenters, requiring
-#    running `consul join -wan {ips-consul-svrs-other-dc}` on consul server in each dc
-ssh_pri_key_file = "~/.ssh/id_rsa"
-
 # zone ID for TLD (ex: zone id for hashidemos.io)
 route53_zone_id = "ZZZZZZZZZZZZZZ"
 
 # TLD to register nodes and lb in
 top_level_domain = "test.example.com"
+
+# AWS Keypair in Region - specifies key used when sshing to instance
+#   https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html
+ssh_key_name = "rpeteuil"
+
+# Either "ssh_pri_key_data" or "ssh_pri_key_file" must be specified
+#   These refer to the Private SSH key specified in ssh_key_name variable
+#   They are used by a post provisioner to join counsul datacenters
+
+# ssh_pri_key_data - contains contents of private key as data (required for TFC/TFE)
+#   remove newlines before populating: awk '{printf "%s\\n", $0}' ~/.ssh/id_rsa
+# ssh_pri_key_data = ""
+
+# ssh_pri_key_file - file URL to private key file (does not work with TFC/TFE)
+ssh_pri_key_file = "~/.ssh/id_rsa"
 
 ### OPTIONAL 
 
@@ -40,3 +46,6 @@ top_level_domain = "test.example.com"
 # Alternate Consul Cluster region and unique DC Name
 # aws_region_alt = "us-east-1"
 # consul_dc_alt  = "dc2"
+
+# AMI prefix name - set if custom AMI's created
+# ami_prefix = "consul-demo"
