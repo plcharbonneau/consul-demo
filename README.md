@@ -23,7 +23,7 @@ This repo can be used to show Consul service discovery, Consul Connect, intentio
     - Note: Intentions have no effect on the Back Tier, as it's not using Consul Connect
 - [Multi Region Configuration](./diagrams/4-Consul-Config-Multi-DC-sm.png)
 
-> A PowerPoint version and larger versions of these diagrams are included in the `./diagrams` directory
+> A PowerPoint version and larger versions of these diagrams is included in the `./diagrams` directory
 
 ## Images
 
