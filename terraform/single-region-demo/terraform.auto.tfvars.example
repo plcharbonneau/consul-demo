@@ -31,3 +31,6 @@ top_level_domain = "test.example.com"
 # Consul Cluster region and DC Name
 # aws_region = "us-west-2"
 # consul_dc  = "dc1"
+
+# AMI prefix name - set if custom AMI's created
+# ami_prefix = "consul-demo"

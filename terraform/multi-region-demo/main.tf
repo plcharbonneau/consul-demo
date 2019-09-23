@@ -23,6 +23,7 @@ module "cluster_main" {
   route53_zone_id  = var.route53_zone_id
   ssh_key_name     = var.ssh_key_name
   consul_lic       = var.consul_lic
+  ami_prefix       = var.ami_prefix
 
   hashi_tags = var.hashi_tags
 }
@@ -40,6 +41,7 @@ module "cluster_alt" {
   route53_zone_id  = var.route53_zone_id
   ssh_key_name     = var.ssh_key_name
   consul_lic       = var.consul_lic
+  ami_prefix       = var.ami_prefix
 
   hashi_tags = var.hashi_tags
 }
@@ -146,7 +148,7 @@ resource "consul_keys" "server_ips_alt" {
 
 # join consul datacenters by running command on main DC server
 resource "null_resource" "join_dc_main" {
-  count      = length(var.ssh_pri_key_file) > 0 ? 1 : 0
+  count      = length(var.ssh_pri_key_data) > 0 ? 1 : length(var.ssh_pri_key_file) > 0 ? 1 : 0
   depends_on = [module.link_vpc, module.cluster_main, consul_keys.server_ips_main]
 
   triggers = {
@@ -157,7 +159,7 @@ resource "null_resource" "join_dc_main" {
     type        = "ssh"
     host        = element(module.cluster_main.consul_servers, 0)
     user        = "ubuntu"
-    private_key = file(var.ssh_pri_key_file)
+    private_key = length(var.ssh_pri_key_data) > 0 ? var.ssh_pri_key_data : length(var.ssh_pri_key_file) > 0 ? file(var.ssh_pri_key_file) : ""
   }
 
   provisioner "remote-exec" {
@@ -171,7 +173,7 @@ resource "null_resource" "join_dc_main" {
 
 # join consul datacenters by running command on alt DC server
 resource "null_resource" "join_dc_alt" {
-  count      = length(var.ssh_pri_key_file) > 0 ? 1 : 0
+  count      = length(var.ssh_pri_key_data) > 0 ? 1 : length(var.ssh_pri_key_file) > 0 ? 1 : 0
   depends_on = [module.link_vpc, module.cluster_alt, consul_keys.server_ips_alt]
 
   triggers = {
@@ -182,7 +184,7 @@ resource "null_resource" "join_dc_alt" {
     type        = "ssh"
     host        = element(module.cluster_alt.consul_servers, 0)
     user        = "ubuntu"
-    private_key = file(var.ssh_pri_key_file)
+    private_key = length(var.ssh_pri_key_data) > 0 ? var.ssh_pri_key_data : length(var.ssh_pri_key_file) > 0 ? file(var.ssh_pri_key_file) : ""
   }
 
   provisioner "remote-exec" {
