@@ -13,11 +13,17 @@ hashi_tags = {
   "TTL"     = "48"
 }
 
+# zone ID for TLD (ex: zone id for hashidemos.io)
+route53_zone_id = "ZZZZZZZZZZZZZZ"
+
+# TLD to register nodes and lb in
+top_level_domain = "test.example.com"
+
 # AWS Keypair in Region - specifies key used when sshing to instance
 #   https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html
 ssh_key_name = "rpeteuil"
 
-# Specify either "ssh_pri_key_data" or "ssh_pri_key_file" 
+# Either "ssh_pri_key_data" or "ssh_pri_key_file" must be specified
 #   These refer to the Private SSH key specified in ssh_key_name variable
 #   They are used by a post provisioner to join counsul datacenters
 
@@ -25,14 +31,8 @@ ssh_key_name = "rpeteuil"
 #   remove newlines before populating: awk '{printf "%s\\n", $0}' ~/.ssh/id_rsa
 # ssh_pri_key_data = ""
 
-# File URL to private key file (does not work with TFC/TFE)
+# ssh_pri_key_file - file URL to private key file (does not work with TFC/TFE)
 ssh_pri_key_file = "~/.ssh/id_rsa"
-
-# zone ID for TLD (ex: zone id for hashidemos.io)
-route53_zone_id = "ZZZZZZZZZZZZZZ"
-
-# TLD to register nodes and lb in
-top_level_domain = "test.example.com"
 
 ### OPTIONAL 
 

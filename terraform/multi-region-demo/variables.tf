@@ -14,9 +14,19 @@ variable "hashi_tags" {
   }
 }
 
+variable "route53_zone_id" {
+  description = "Route 53 zone into which to place hostnames"
+}
+
+variable "top_level_domain" {
+  description = "The top-level domain to put all Route53 records"
+}
+
 variable "ssh_key_name" {
   description = "Name of existing AWS ssh key"
 }
+
+# One of these two must be specified
 
 variable "ssh_pri_key_file" {
   description = "File URL to Private SSH key for post provisioning config"
@@ -26,14 +36,6 @@ variable "ssh_pri_key_file" {
 variable "ssh_pri_key_data" {
   description = "Contents of Private SSH key for post provisioning config"
   default     = ""
-}
-
-variable "route53_zone_id" {
-  description = "Route 53 zone into which to place hostnames"
-}
-
-variable "top_level_domain" {
-  description = "The top-level domain to put all Route53 records"
 }
 
 # Optional
