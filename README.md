@@ -211,12 +211,28 @@ Notes for multi-region demo:
 > Intention enable defining specific services that each service can communicate.
 
 - Show Web Client web page, and point out its communicating with Listing & Product
+
+> now we'll stop all services (using Consul connect) from communicating.
+
 - Open Consul UI and select Intentions tab
   - Create an Intention from `*` to `*` of type `Deny` and click save
-- Show Web Client web page and point out it cant communicate with Listing or Product
+- Show Web Client web page and point out it cannot communicate with Listing or Product services
+
+> lets allow web_client to communicate with the listing service.
+
 - Switch back to Consul Intentions UI
   - Create Intention from `web_client` to `listing` of type `Allow` and click save
 - Show Web Client web page and point out it can now communicate with Listing
+
+> Intentions also specifying the service that can initiate communications.
+
+- Switch back to Consul Intentions UI
+  - Create Intention from `product` to `web_client` of type `Allow` and click save
+- Show Web Client web page and point out the it still cannot communicate with product
+
+> Now the web_client still cannot talk to product, beccause the intention we added allows product to initiate connections to web_client (not the other way arround).
+> So, lets add a connection that allows web_client to initiate communications with product.
+
 - Switch back to Consul Intentions UI
   - Create Intention from `web_client` to `product` of type `Allow` and click save
 - Show Web Client web page and point out both working again
