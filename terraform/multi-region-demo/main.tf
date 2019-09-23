@@ -1,4 +1,14 @@
-# Consul Connect Demo Cluster - Single Region
+# Consul Connect Demo Cluster - Multi Region
+
+terraform {
+  required_version = ">= 0.12.4"
+
+  required_providers {
+    aws    = "~> 2.29"
+    consul = "~> 2.5"
+    null   = "~> 2.1"
+  }
+}
 
 # Create MAIN Consul Connect cluster
 module "cluster_main" {
@@ -72,7 +82,8 @@ provider "consul" {
 
 # Configure Prepared Query in main DC
 resource "consul_prepared_query" "product_service_main" {
-  provider = "consul.main"
+  provider   = "consul.main"
+  depends_on = ["module.cluster_main"]
 
   datacenter   = "${module.cluster_main.consul_dc}"
   name         = "product"
@@ -88,7 +99,8 @@ resource "consul_prepared_query" "product_service_main" {
 
 # Configure Prepared Query in alt DC
 resource "consul_prepared_query" "product_service_alt" {
-  provider = "consul.alt"
+  provider   = "consul.alt"
+  depends_on = ["module.cluster_alt"]
 
   datacenter   = "${module.cluster_alt.consul_dc}"
   name         = "product"
@@ -104,7 +116,8 @@ resource "consul_prepared_query" "product_service_alt" {
 
 # Add configuration data to Consul KV in main DC
 resource "consul_keys" "server_ips_main" {
-  provider = "consul.main"
+  provider   = "consul.main"
+  depends_on = ["module.cluster_main"]
 
   key {
     path  = "server_ips"
@@ -120,7 +133,8 @@ resource "consul_keys" "server_ips_main" {
 
 # Add configuration data to Consul KV in alt DC
 resource "consul_keys" "server_ips_alt" {
-  provider = "consul.alt"
+  provider   = "consul.alt"
+  depends_on = ["module.cluster_alt"]
 
   key {
     path  = "server_ips"
@@ -137,7 +151,7 @@ resource "consul_keys" "server_ips_alt" {
 # join consul datacenters by running command on main DC server
 resource "null_resource" "join_dc_main" {
   count      = "${length(var.ssh_pri_key_file) > 0 ? 1 : 0}"
-  depends_on = ["module.link_vpc", "consul_keys.server_ips_main"]
+  depends_on = ["module.link_vpc", "module.cluster_main", "consul_keys.server_ips_main"]
 
   triggers = {
     consul_ips = "${join(" ", concat(module.cluster_main.consul_servers_private_ip, module.cluster_alt.consul_servers_private_ip))}"
@@ -162,7 +176,7 @@ resource "null_resource" "join_dc_main" {
 # join consul datacenters by running command on alt DC server
 resource "null_resource" "join_dc_alt" {
   count      = "${length(var.ssh_pri_key_file) > 0 ? 1 : 0}"
-  depends_on = ["module.link_vpc", "consul_keys.server_ips_alt"]
+  depends_on = ["module.link_vpc", "module.cluster_alt", "consul_keys.server_ips_alt"]
 
   triggers = {
     consul_ips = "${join(" ", concat(module.cluster_main.consul_servers_private_ip, module.cluster_alt.consul_servers_private_ip))}"

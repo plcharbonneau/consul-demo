@@ -6,7 +6,7 @@ resource "aws_lb" "consul_lb" {
   name               = "${local.unique_proj_id}-c-lb"
   internal           = false
   load_balancer_type = "application"
-  subnets            = ["${aws_subnet.public.*.id}"]
+  subnets            = "${aws_subnet.public.*.id}"
   security_groups    = ["${aws_security_group.lb_default.id}"]
 
   tags = "${merge(var.hashi_tags, map("Name", "${local.unique_proj_id}-c-lb"))}"
@@ -18,7 +18,7 @@ resource "aws_lb_target_group" "consul" {
   protocol = "HTTP"
   vpc_id   = "${aws_vpc.prod.id}"
 
-  stickiness = {
+  stickiness {
     type    = "lb_cookie"
     enabled = false
   }
@@ -35,7 +35,7 @@ resource "aws_lb_listener" "consul_lb" {
   port              = 80
   protocol          = "HTTP"
 
-  default_action = {
+  default_action {
     target_group_arn = "${aws_lb_target_group.consul.arn}"
     type             = "forward"
   }
@@ -47,7 +47,7 @@ resource "aws_lb" "webclient-lb" {
   name               = "${local.unique_proj_id}-lb"
   internal           = false
   load_balancer_type = "application"
-  subnets            = ["${aws_subnet.public.*.id}"]
+  subnets            = "${aws_subnet.public.*.id}"
   security_groups    = ["${aws_security_group.lb_default.id}"]
 
   tags = "${merge(var.hashi_tags, map("Name", "${local.unique_proj_id}-lb"))}"
@@ -59,7 +59,7 @@ resource "aws_lb_target_group" "webclient" {
   protocol = "HTTP"
   vpc_id   = "${aws_vpc.prod.id}"
 
-  stickiness = {
+  stickiness {
     type    = "lb_cookie"
     enabled = false
   }
@@ -76,7 +76,7 @@ resource "aws_lb_listener" "webclient-lb" {
   port              = 80
   protocol          = "HTTP"
 
-  default_action = {
+  default_action {
     target_group_arn = "${aws_lb_target_group.webclient.arn}"
     type             = "forward"
   }

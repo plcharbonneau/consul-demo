@@ -16,7 +16,7 @@ data "aws_iam_policy_document" "consul_assume_role" {
   statement {
     actions = ["sts:AssumeRole"]
 
-    principals = {
+    principals {
       type        = "Service"
       identifiers = ["ec2.amazonaws.com"]
     }

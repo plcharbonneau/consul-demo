@@ -1,5 +1,14 @@
 # Consul Connect Demo Cluster - Single Region
 
+terraform {
+  required_version = ">= 0.12.4"
+
+  required_providers {
+    aws    = "~> 2.29"
+    consul = "~> 2.5"
+  }
+}
+
 # Create Consult Connect demo cluster
 module "cluster_main" {
   source = "../modules/consul-demo-cluster"
@@ -25,6 +34,8 @@ provider "consul" {
 }
 
 resource "consul_prepared_query" "product_service" {
+  depends_on = ["module.cluster_main"]
+
   datacenter   = "${module.cluster_main.consul_dc}"
   name         = "product"
   only_passing = true
@@ -38,6 +49,8 @@ resource "consul_prepared_query" "product_service" {
 }
 
 resource "consul_keys" "keys" {
+  depends_on = ["module.cluster_main"]
+
   key {
     path   = "product/run"
     value  = "true"

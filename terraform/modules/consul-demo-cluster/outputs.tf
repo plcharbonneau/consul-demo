@@ -33,11 +33,11 @@ output "consul_lb" {
 }
 
 output "consul_servers" {
-  value = ["${aws_route53_record.consul_a_records.*.fqdn}"]
+  value = "${aws_route53_record.consul_a_records.*.fqdn}"
 }
 
 output "consul_servers_private_ip" {
-  value = ["${aws_instance.consul.*.private_ip}"]
+  value = "${aws_instance.consul.*.private_ip}"
 }
 
 output "webclient_lb" {
@@ -45,17 +45,17 @@ output "webclient_lb" {
 }
 
 output "webclient_servers" {
-  value = ["${aws_route53_record.webclient_a_records.*.fqdn}"]
+  value = "${aws_route53_record.webclient_a_records.*.fqdn}"
 }
 
 output "listing_api_servers" {
-  value = ["${aws_route53_record.listing_a_records.*.fqdn}"]
+  value = "${aws_route53_record.listing_a_records.*.fqdn}"
 }
 
 output "mongo_servers" {
-  value = ["${aws_route53_record.mongo_a_records.*.fqdn}"]
+  value = "${aws_route53_record.mongo_a_records.*.fqdn}"
 }
 
 output "product_api_servers" {
-  value = ["${aws_route53_record.product_a_records.*.fqdn}"]
+  value = "${aws_route53_record.product_a_records.*.fqdn}"
 }
