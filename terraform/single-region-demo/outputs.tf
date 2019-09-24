@@ -40,7 +40,7 @@ output "working_aliases" {
 
     alias ssh-mongo='ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ubuntu@${module.cluster_main.mongo_servers[0]}'
     alias ssh-listing='ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ubuntu@${module.cluster_main.listing_api_servers[0]}'
-    alias ssh-web='ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ubuntu@${module.cluster_main.webclient_servers[0]}'
+    alias ssh-webclient='ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ubuntu@${module.cluster_main.webclient_servers[0]}'
 
 EOF
 }
