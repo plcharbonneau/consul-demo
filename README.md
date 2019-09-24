@@ -121,7 +121,6 @@ Multi-Region Demo Notes:
 > Dig queries Consul via DNS and returns healthy mongodb service.
 
 - (optional) ping the mongodb service: `ping mongodb.service.consul`
-- (optional) list product services using dig: `dig +short product.service.consul srv`
 - (optional) list services registered with Consul: `consul catalog services`
 
 #### Service Discovery - Network traffic
@@ -171,7 +170,7 @@ Multi-Region Demo Notes:
 > note: product uses "prepared query" to enable failover to other datacenters.
 
 - run `./3-dig.sh` to show a dns query using dig for all product services
-- (optional) list listing services using dig: `dig +short listing.service.consul srv`
+- (optional) list listing services using dig: `dig +short listing.connect.consul srv`
 
 > Like earlier, this host resolves service names to an IP where product is running.
 > Notice, here we search on servicename.CONNECT.consul instead of .SERVICE.consul.
@@ -179,7 +178,7 @@ Multi-Region Demo Notes:
 
 - (optional) query mongoDB service using connect `dig +short mongodb.connect.consul srv`
 
-> Nothing returned as no MongoDB services are configured for connect (refer to diagram if necessary).
+> Nothing returned as the MongoDB services are not configured to use Consul Connect (refer to diagram if necessary).
 
 #### Consul Connect - Network traffic
 
@@ -191,7 +190,6 @@ Multi-Region Demo Notes:
 > As we can see, the network traffic is not TLS encrypted gibberish.
 
 - Hit _Cntl-C_ to exit network traffic dump
-
 - you can `exit` the ssh connection to `webclient` instance
 
 #### Consul Connect Summary
@@ -221,26 +219,25 @@ Multi-Region Demo Notes:
 
 - Show Web Client web page, and point out its communicating with Listing & Product
 
-> now we'll stop all services (using Consul connect) from communicating.
+> Now we'll stop all services (using Consul connect) from communicating.
 
 - Open Consul UI and select Intentions tab
   - Create an Intention from `*` to `*` of type `Deny` and click save
 - Show Web Client web page and point out it cannot communicate with Listing or Product services
 
-> lets allow web_client to communicate with the listing service.
+> Lets allow web_client to communicate with the listing service.
 
 - Switch back to Consul Intentions UI
   - Create Intention from `web_client` to `listing` of type `Allow` and click save
 - Show Web Client web page and point out it can now communicate with Listing
 
-> Intentions also specifying the service that can initiate communications.
+> Intentions also specify which service can initiate communications.
 
 - Switch back to Consul Intentions UI
   - Create Intention from `product` to `web_client` of type `Allow` and click save
 - Show Web Client web page and point out the it still cannot communicate with product
 
-> Now the web_client still cannot talk to product, beccause the intention we added allows product to initiate connections to web_client (not the other way arround).
-> So, lets add a connection that allows web_client to initiate communications with product.
+> Now the web_client cannot talk to product because the intention we added allows product to initiate connections to web_client, and not other way arround.  So, lets add a connection that allows web_client to initiate communications with product.
 
 - Switch back to Consul Intentions UI
   - Create Intention from `web_client` to `product` of type `Allow` and click save
@@ -266,17 +263,17 @@ Multi-Region Demo Notes:
   - point out **Configuration** Section under Product API
   - shows **datacenter = dc1**
 
-> Now we're going to trigger a fail of the product service in this datacenter.
+> Now we're going to trigger the product service to fail in this datacenter.
 
 - Open Consul UI and select Key/Value tab (make sure it's in dc1)
-  - Click on folder neamed `product` then value named `run`
+  - Click on `product` folder and value `run`
   - Change value from `true` to `false`
-- Switch to the Consul UI services & refresh to see `product` services fail
-  - keep refreshing until all nodes have failed
+- Switch to the Consul UI services and watch the `product` services fail their health checks
+  - wait until there are two failures for `product` and its proxy
 
-> Now that the service has failed, let see view the webpage.
+> Now that the service has failed, let view the webpage.
 
-- Show Web Client web page
+- Show Web Client web page & hit refresh
   - point out **Configuration** Section under Product API
   - now shows **datacenter = dc2**, as the instance responding is in DC2
 
