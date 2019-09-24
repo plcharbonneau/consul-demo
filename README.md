@@ -2,14 +2,16 @@
 
 This repo can be used to show Consul service discovery, Consul Connect, intentions and service failover between datacenters (via prepared query)
 
-## Demo Variants
+## Overview
+
+### Demo Variants
 
 - Single Region - located in `terraform/single-region-demo`
   - demonstrates: service discovery, Consul Connect, and intentions
 - Multi Region - located in `terraform/multi-region-demo`
   - demonstrates: service discovery, Consul Connect, intentions and service failover between datacenters using a prepared query
 
-## Architecture & Diagrams
+### Architecture & Diagrams
 
 - [Simple Three Tier Architecture](./diagrams/1-High-Level-Architecture-sm.png)
   - Front tier: `web_client` service
@@ -25,17 +27,24 @@ This repo can be used to show Consul service discovery, Consul Connect, intentio
 
 > A PowerPoint version and larger versions of these diagrams is included in the `./diagrams` directory
 
-## Images
+### Requirements
 
-- Images are **publicly** available in `us-east-1` & `us-west-2` (default regions) as well as `us-east-2` & `us-west-1`
-- To customize images:
+- AWS account & credentials
+- AWS Route53 Hosted Zone ID
+  - required as demo creates FQDNs for instances & load balancers
+- Terraform CLI > 0.12.4 or TFC/TFE
+
+### AWS AMIs
+
+- AWS AMIs are **publicly** available in `us-east-1` & `us-west-2` (default regions) as well as `us-east-2` & `us-west-1`
+- To customize AMIs:
   - View the [Packer README](./packer/README.md)
   - Change the AMI name to avoid name conflict with original
     - set `AMI_PREFIX` value in `packer/Makefile`
     - set `ami_prefix` variable in `terraform.auto.tfvars`
   - set `AMI_OWNER` value to your AWS organization ID
 
-## Setup
+## First Time Setup
 
 > This demo is simplified if you push your system's default ssh key (`~/.ssh/id_rsa.pub`) to the AWS regions used with this demo.
 
@@ -61,55 +70,55 @@ Multi-Region Demo Notes:
   - `ssh_pri_key_data` - contents of private key as data with newlines replaced with `\n` (required for TFC/TFE)
     - remove newlines with command: `awk '{printf "%s\\n", $0}' ~/.ssh/id_rsa`
 
-## Demo Prep
+## Demo Script
+
+### Preperation
 
 - Deploy with Terraform (takes 3-4 minutes)
-- Following instruction in terraform output section `working connections`
-  - Open two URL's in Browser for
+- Follow instruction in Terraform output `working connections`
+  - Open two URL's in Browser
     - web-page rendered by `web_client` service
     - Consul UI
+    - (optional) bookmark URLs
   - keep Terraform Output visible by making connection in other Terminal tabs
-- Edit `~/.ssh/known_hosts` and remove entries from previous demos
+  - (optional) add aliases from Terraform output `working_aliases` to .bash_profile
+    - eliminates need to remove keys from known_hosts before each demo
 - Verify the all services are running in Consul UI
+- Edit `~/.ssh/known_hosts` and remove entries from previous demos
+  - unless using ssh aliases from Terraform output `working_aliases`
 
-## Demo Script
+### Introduction
 
 - Show *High Level Architecture* diagram
 
-> Explain the three tiers and communications between the services.
-> We are going to start by discussing Service Discovery and Service Registration
+> Explain the three tiers and communications between the services.  We are going to start by discussing Service Discovery and Service Registration
 
-### Consul Service Discovery
+### Service Discovery
 
 > In order for services to be discoverable via Consul, they first must register themselves.
 
-#### Service Regitration
+#### Service Discovery - Service Regitration
 
 - open new terminal tab & connect to `MongoDB` instance
   - use connection string in terraform output `working connections`
 
-> This instance's Consul client publishes all the services running on it to Consul.
-> In this demo, MongoDB is the only service on this host, so let's review it's config.
+> This instance's Consul client publishes all the services running on it to Consul.  In this demo, MongoDB is the only service on this host, so let's review it's config.
 
 - run `./1-cat-cons-config.sh` to display `MongoDB` service configuration
 
-> Explain service config & health check basics.
-> Consul uses this infomation to build a Service Catalog.
-> Consul monitors healthchecks to insure only healthy services listed in catalog.
+> Explain service config & health check basics.  Consul uses this infomation to build a Service Catalog.  Consul monitors healthchecks to insure only healthy services listed in catalog.
 
 - (optional) - show service tab on Consul UI, select MondoDB & show service checks
 - you can `exit` the ssh connection to `MongoDB` instance
 
 #### Service Discovery
 
-> Once services are registered, other services can easily discover them.
-> Let's show how the listing service connects to MongoDB.
+> Once services are registered, other services can easily discover them.  Let's show how the listing service connects to MongoDB.
 
 - open new terminal tab & connect to `listing` instance
   - use connection string in terraform output `working connections`
 
-> The listing service is written in NodeJS and isn't Consul aware.
-> It reads the environment variables DB_URL to get MongoDB servers address.
+> The listing service is written in NodeJS and isn't Consul aware.  It reads the environment variables DB_URL to get MongoDB servers address.
 
 - run `./1-cat-system.sh` to show listing service systemd configuration
 
@@ -117,16 +126,14 @@ Multi-Region Demo Notes:
 
 - run `./2-dig.sh` to show a dns query using dig for all mongodb services
 
-> Consul automatically resolves service names via DNS to an IP where mongodb is running.
-> Dig queries Consul via DNS and returns healthy mongodb service.
+> Consul automatically resolves service names via DNS to an IP where mongodb is running.  Dig queries Consul via DNS and returns healthy mongodb service.
 
 - (optional) ping the mongodb service: `ping mongodb.service.consul`
 - (optional) list services registered with Consul: `consul catalog services`
 
-#### Service Discovery - Network traffic
+#### Service Discovery - Network Traffic
 
-> Service discovery allows service to easily discover and connect to other services.
-> But Network traffic is unencrypted unless services coded with encryption.
+> Service discovery allows service to easily discover and connect to other services.  But Network traffic is unencrypted unless services coded with encryption.
 
 - run `./3-nw-traffic.sh` to show network traffic between `listing` and `mongodb`
   - Traffic will stream immediately as the connection to mongodb is persistent
@@ -143,44 +150,33 @@ Multi-Region Demo Notes:
 
 - Show *Consul Config Single DC* diagram
 
-> You'll notice that the Front Tier and Middle tier have sidecar-proxies.
-> They are configured to communicate using Consul Connect.
-> The Back Tier is configured to only use Service Discovery.
+> You'll notice that the Front Tier and Middle tier have sidecar-proxies.  They are configured to communicate using Consul Connect.  The Back Tier is configured to only use Service Discovery.
 
 - open new terminal tab & connect to `webclient` instance
   - use connection string in terraform output `working connections`
 
 #### Consul Connect - Configuration
 
-> In the diagram, webclient communicates with listing & product services.
-> Let's show how the webclient service is configured.
+> In the diagram, webclient communicates with listing & product services.  Let's show how the webclient service is configured.
 
 - run `./1-cat-system.sh` to show webclient service systemd configuration
 
-> Systemd config sets Environment Vars for listing & product to localhost @ unique ports.
-> So how are these local ports re-directed to the proper serices? via the proxy.
+> Systemd config sets Environment Vars for listing & product to localhost @ unique ports.  So how are these local ports re-directed to the proper serices? via the proxy.
 
 - run `./2-cat-cons-config.sh` to display `webclient` service configuration
 
-> Describe the connect-sidecar service block.
-> Upstream connections bind a local port to services in Consul.
-> This configures Consul to run a local proxy connecting local port `10001` to `product`.
-> Consul proxies localhost:10001 to `product` services AND encrypts the traffic.
-> Consul proxies localhost:10002 to `listing` services AND encrypts the traffic.
-> note: product uses "prepared query" to enable failover to other datacenters.
+> Describe the connect-sidecar service block.  Upstream connections bind a local port to services in Consul.  Consul proxies localhost:10001 to `product` services AND encrypts the traffic.  Consul proxies localhost:10002 to `listing` services AND encrypts the traffic.  (Note: product uses "prepared query" to enable failover to other datacenters.)
 
 - run `./3-dig.sh` to show a dns query using dig for all product services
 - (optional) list listing services using dig: `dig +short listing.connect.consul srv`
 
-> Like earlier, this host resolves service names to an IP where product is running.
-> Notice, here we search on servicename.CONNECT.consul instead of .SERVICE.consul.
-> this limits our results to services using Consul Connect.
+> Like earlier, this host resolves service names to an IP where product is running.  Notice, here we search on servicename.CONNECT.consul instead of .SERVICE.consul.  This limits our results to services using Consul Connect.
 
 - (optional) query mongoDB service using connect `dig +short mongodb.connect.consul srv`
 
 > Nothing returned as the MongoDB services are not configured to use Consul Connect (refer to diagram if necessary).
 
-#### Consul Connect - Network traffic
+#### Consul Connect - Network Traffic
 
 > The sidecar proxies used in Consul Connect use TLS to encrypt communications.
 
@@ -192,28 +188,7 @@ Multi-Region Demo Notes:
 - Hit _Cntl-C_ to exit network traffic dump
 - you can `exit` the ssh connection to `webclient` instance
 
-#### Consul Connect Summary
-
-> Steps required to configure `web_client` to talk to `product` via connect
-
-  1. Enable Connect
-  2. Tell `web_client` that `product` service is reachable on localhost ports
-  3. Consul Connect handles balancing traffic between 1, 2, 20, 100 healthy instances
-  4. Consul Connect _encrypts_ all network traffic
-  5. `web_client` knows _nothing_ about TLS
-  6. `web_client` knows _nothing_ about mutual-TLS authentication
-  7. `web_client` doesn't have to manage certificates, keys, CRLs, CA certs...
-  8. `web_client` simply makes the same _simple, unencrypted requests_ it always has
-
-> By configuring `product` to listen only on `localhost`, you've reduced the security boundary to individual server instances --- all network traffic is _encrypted_.
-> Only steps necessary to enable existing application to configure Consul Connect and  _configure app to communicate to port on localhost_.
-
-  1. `product` knows _nothing_ about TLS
-  2. `product` knows _nothing_ about mutual-TLS authentication
-  3. `product` doesn't have to manage certificates, keys, CRLs, CA certs...
-  4. `product` simply sees _simple, unencrypted traffic_ coming to it
-
-#### Intentions
+#### Consul Connect - Intentions
 
 > Intention enable defining specific services that each service can communicate.
 
@@ -243,19 +218,38 @@ Multi-Region Demo Notes:
   - Create Intention from `web_client` to `product` of type `Allow` and click save
 - Show Web Client web page and point out both working again
 
-> Describe "Scalability of Intentions".
-> If you have 6 `web_client` instances, 17 `listing` instances and 23 `product` instances; you'd have `6 * 17 + 6 * 23 = 240` endpoint combinations to define.
-> Those can be replaced with just _2_ intention definitions.
-> Another example: If you double the number of backends, you have to add _another_ 240 endpoint combinations.
-> With Intentions, you do _nothing_ because intentions follow the service.
+> **Describe "Scalability of Intentions"**:  If you have 6 `web_client` instances, 17 `listing` instances and 23 `product` instances; you'd have `6 * 17 + 6 * 23 = 240` endpoint combinations to define.  These can be replaced with just _2_ intention definitions.
+> **Another example**: If you double the number of backends, you have to add _another_ 240 endpoint combinations.  With Intentions, you do _nothing_ because intentions follow the service.
 
-### Configuration K/V - displayed on webclient UI
+#### Consul Connect - Summary
+
+> Steps required to configure `web_client` to talk to `product` via connect
+
+  1. Enable Connect
+  2. Tell `web_client` that `product` service is reachable on localhost ports
+  3. Consul Connect handles balancing traffic between 1, 2, 20, 100 healthy instances
+  4. Consul Connect _encrypts_ all network traffic
+  5. `web_client` knows _nothing_ about TLS
+  6. `web_client` knows _nothing_ about mutual-TLS authentication
+  7. `web_client` doesn't have to manage certificates, keys, CRLs, CA certs...
+  8. `web_client` simply makes the same _simple, unencrypted requests_ it always has
+
+> By configuring `product` to listen only on `localhost`, you've reduced the security boundary to individual server instances --- all network traffic is _encrypted_.  Only steps necessary to enable existing application to configure Consul Connect and  _configure app to communicate to port on localhost_.
+
+  1. `product` knows _nothing_ about TLS
+  2. `product` knows _nothing_ about mutual-TLS authentication
+  3. `product` doesn't have to manage certificates, keys, CRLs, CA certs...
+  4. `product` simply sees _simple, unencrypted traffic_ coming to it
+
+### Configuration K/V
+
+> Describe how the web_client service has been displaying configuration information from Consul's K/V store.
 
 - Show Web Client web page, point out **Configuration** Section
   - the `product` service reads the Consul K/V store (along with the mongodb records)
   - data returns to `web_client` and displayed
 
-### Datacenter Failover with Prepared Queries - Multi-Region Demo (Only)
+### Datacenter Failover - Requires Multi-Region Demo
 
 > Webclient service is configured to use a "prepared query" to find the `product` service.  If every product service in the current DC fails, it looks for the service in other DCs.  Additional info on the prepared query can be found in the [prepared_query reference](./reference/prepared_query.md)
 
@@ -277,7 +271,7 @@ Multi-Region Demo Notes:
   - point out **Configuration** Section under Product API
   - now shows **datacenter = dc2**, as the instance responding is in DC2
 
-#### Optional Failover Drilldown
+#### Datacenter Failover - Optional Drilldown
 
 - ssh into any one of the previous servers (in DC1)
 - type `dig +short product.connect.consul srv`

@@ -1,7 +1,5 @@
 *~
 *.DS_Store
-packer/binaries/*
-packer/files/encrypt.hcl
 packer/.built*
 env.sh
 .terraform/
@@ -10,5 +8,3 @@ terraform.tfstate.backup
 tf.plan
 terraform.auto.tfvars
 
-# Include binaries folder
-!packer/binaries/.gitkeep
