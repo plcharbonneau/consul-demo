@@ -27,15 +27,22 @@ This repo can be used to show Consul service discovery, Consul Connect, intentio
 
 ## Images
 
-- Images are published in `us-east-1`, `us-east-2`, `us-west-1` and `us-west-2`
-- If customizing images:
+- Images are **publicly** available in `us-east-1` & `us-west-2` (default regions) as well as `us-east-2` & `us-west-1`
+- To customize images:
   - View the [Packer README](./packer/README.md)
   - Change the AMI name to avoid name conflict with original
     - set `AMI_PREFIX` value in `packer/Makefile`
-    - set `ami_prefix` terraform variable in `terraform.auto.tfvars`
-  - change `AMI_OWNER` value to your AWS organization ID
+    - set `ami_prefix` variable in `terraform.auto.tfvars`
+  - set `AMI_OWNER` value to your AWS organization ID
 
 ## Setup
+
+> This demo is simplified if you push your system's default ssh key (`~/.ssh/id_rsa.pub`) to the AWS regions used with this demo.
+
+- the script [reference/push-ssh-key-to-aws.sh](./reference/push-ssh-key-to-aws.sh) pushes an SSH key of your chosing to every region using the AWS CLI
+  - edit the value of `aws_keypair_name` and `publickeyfile` before running
+
+> Deploying the demo infrastructure
 
 - switch to the directory for the desired demo variant
   - for single region: `cd terraform/single-region-demo`
@@ -44,14 +51,9 @@ This repo can be used to show Consul service discovery, Consul Connect, intentio
   - `cp terraform.auto.tfvars.example terraform.auto.tfvars`
 - Edit `terraform.auto.tfvars` and set the entries as described by the comments
 
-Notes for multi-region demo:
+Multi-Region Demo Notes:
 
-> This demo is simplified if you push your system's default ssh key (`~/.ssh/id_rsa.pub`) to the AWS regions used with this demo.
-
-- `reference/push-ssh-key-to-aws.sh` pushes an SSH key of your chosing to every region using the AWS CLI
-  - edit the value of `aws_keypair_name` and `publickeyfile` in the script
-
-> The multi-region terraform code, uses a post provisioner which requires specifying the AWS ssh key name & the content of the private key (via file reference or as a string)
+> The multi-region terraform code uses a post provisioner which requires specifying the AWS ssh key name & the content of the private key (via file reference or as a string)
 
 - `ssh_key_name` - must exist with this name in both regions (by default us-west-2 and us-east-1)
 - Must specify either `ssh_pri_key_data` or `ssh_pri_key_file` so that they refer to the Private SSH key for the key specified in `ssh_key_name`
