@@ -38,9 +38,9 @@ output "working_aliases" {
   
   ssh aliases for repeating demo with same host fqdn (append to .bash_profile)
 
-    alias ssh-mongo='ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' ubuntu@${module.cluster_main.mongo_servers[0]}'
-    alias ssh-listing='ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' ubuntu@${module.cluster_main.listing_api_servers[0]}'
-    alias ssh-web='ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' ubuntu@${module.cluster_main.webclient_servers[0]}'
+    alias ssh-mongo='ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ubuntu@${module.cluster_main.mongo_servers[0]}'
+    alias ssh-listing='ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ubuntu@${module.cluster_main.listing_api_servers[0]}'
+    alias ssh-web='ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ubuntu@${module.cluster_main.webclient_servers[0]}'
 
 EOF
 }
