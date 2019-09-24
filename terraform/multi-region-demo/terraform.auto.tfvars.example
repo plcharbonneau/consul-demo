@@ -10,7 +10,7 @@ project_name = "rpeteuil-consul-demo"
 hashi_tags = {
   "project" = "RPeteuil Consul Demo"
   "owner"   = "rpeteuil@hashicorp.com"
-  "TTL"     = "48"
+  "TTL"     = "12"
 }
 
 # zone ID for TLD (ex: zone id for hashidemos.io)
