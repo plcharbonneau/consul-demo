@@ -111,7 +111,7 @@ Multi-Region Demo Notes:
 - (optional) - show service tab on Consul UI, select MondoDB & show service checks
 - you can `exit` the ssh connection to `MongoDB` instance
 
-#### Service Discovery
+#### Service Discovery - Overview
 
 > Once services are registered, other services can easily discover them.  Let's show how the listing service connects to MongoDB.
 
