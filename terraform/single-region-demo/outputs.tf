@@ -49,7 +49,6 @@ EOF
 output "working_connections" {
   value = <<EOF
 
-
   OPEN IN BROWSER TABS
     Webclient   http://${module.cluster_main.webclient_lb}
     Consul GUI  http://${module.cluster_main.consul_lb}
