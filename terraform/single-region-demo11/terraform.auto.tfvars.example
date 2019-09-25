@@ -10,7 +10,7 @@ project_name = "rpeteuil-consul-demo"
 hashi_tags = {
   "project" = "RPeteuil Consul Demo"
   "owner"   = "rpeteuil@hashicorp.com"
-  "TTL"     = "12"
+  "TTL"     = "48"
 }
 
 # AWS Keypair in Region - specifies key used when sshing to instance
@@ -31,6 +31,3 @@ top_level_domain = "test.example.com"
 # Consul Cluster region and DC Name
 # aws_region = "us-west-2"
 # consul_dc  = "dc1"
-
-# AMI prefix name - set if custom AMI's created
-# ami_prefix = "consul-demo"

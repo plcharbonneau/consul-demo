@@ -1,11 +1,11 @@
 # Required
 variable "project_name" {
-  type        = string
+  type        = "string"
   description = "Set this, resources are given a unique name based on this"
 }
 
 variable "hashi_tags" {
-  type = map(string)
+  type = "map"
 
   default = {
     "TTL"     = ""
@@ -84,7 +84,7 @@ variable "client_webclient_count" {
 
 variable "ami_owner" {
   description = "AWS account which owns AMIs"
-  default     = "753646501470" # hc-sc-demos-2018
+  default     = "753646501470"                # hc-sc-demos-2018
 }
 
 variable "consul_lic" {
@@ -101,4 +101,3 @@ variable "internal_netblock" {
   description = "Global netblock"
   default     = "10.0.0.0/8"
 }
-
