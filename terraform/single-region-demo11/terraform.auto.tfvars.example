@@ -1,0 +1,36 @@
+# Rename this to `terraform.auto.tfvars` and edit.
+# Set all of variables.
+
+# 'project_name' and 'hashi_tags["owner"]' are combined to set Consul 'cluster name'
+# cloud auto-join uses 'cluster name'
+
+# Unique Project Name
+project_name = "rpeteuil-consul-demo"
+
+hashi_tags = {
+  "project" = "RPeteuil Consul Demo"
+  "owner"   = "rpeteuil@hashicorp.com"
+  "TTL"     = "12"
+}
+
+# AWS Keypair in Region - specifies key used when sshing to instance
+#   https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html
+ssh_key_name = "rpeteuil"
+
+# zone ID for TLD (ex: zone id for hashidemos.io)
+route53_zone_id = "ZZZZZZZZZZZZZZ"
+
+# TLD to register nodes and lb in
+top_level_domain = "test.example.com"
+
+### OPTIONAL 
+
+# Consul Enterprise License Key (if exists)
+# consul_lic = "consul-enterprise-license-string-here"
+
+# Consul Cluster region and DC Name
+# aws_region = "us-west-2"
+# consul_dc  = "dc1"
+
+# AMI prefix name - set if custom AMI's created
+# ami_prefix = "consul-demo"
