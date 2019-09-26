@@ -1,10 +1,10 @@
 # network security groups
 
 # default security group applied to all servers in demo
-resource aws_security_group "svr_default" {
+resource "aws_security_group" "svr_default" {
   description = "Traffic allowed to all CC demo servers"
-  vpc_id      = "${aws_vpc.prod.id}"
-  tags        = "${var.hashi_tags}"
+  vpc_id      = aws_vpc.prod.id
+  tags        = var.hashi_tags
 
   ingress {
     from_port   = 22
@@ -17,7 +17,7 @@ resource aws_security_group "svr_default" {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
-    cidr_blocks = ["${var.internal_netblock}"]
+    cidr_blocks = [var.internal_netblock]
   }
 
   egress {
@@ -29,10 +29,10 @@ resource aws_security_group "svr_default" {
 }
 
 # security group applied to Consul Servers
-resource aws_security_group "consul_server" {
+resource "aws_security_group" "consul_server" {
   description = "Traffic allowed to Consul servers"
-  vpc_id      = "${aws_vpc.prod.id}"
-  tags        = "${var.hashi_tags}"
+  vpc_id      = aws_vpc.prod.id
+  tags        = var.hashi_tags
 
   ingress {
     from_port   = 8500
@@ -43,10 +43,10 @@ resource aws_security_group "consul_server" {
 }
 
 # security group applied to LB
-resource aws_security_group "lb_default" {
+resource "aws_security_group" "lb_default" {
   description = "Traffic allowed to CC Demo Load Balancers"
-  vpc_id      = "${aws_vpc.prod.id}"
-  tags        = "${var.hashi_tags}"
+  vpc_id      = aws_vpc.prod.id
+  tags        = var.hashi_tags
 
   ingress {
     from_port   = 80
@@ -59,7 +59,7 @@ resource aws_security_group "lb_default" {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
-    cidr_blocks = ["${var.internal_netblock}"]
+    cidr_blocks = [var.internal_netblock]
   }
 
   egress {
@@ -69,3 +69,4 @@ resource aws_security_group "lb_default" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
+

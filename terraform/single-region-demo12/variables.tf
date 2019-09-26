@@ -1,11 +1,11 @@
 # Required
 variable "project_name" {
-  type        = "string"
+  type        = string
   description = "Set this, resources are given a unique name based on this"
 }
 
 variable "hashi_tags" {
-  type = "map"
+  type = map(string)
 
   default = {
     "TTL"     = ""
@@ -48,4 +48,3 @@ variable "consul_lic" {
   description = "License file content for Consul Enterprise"
   default     = ""
 }
-
