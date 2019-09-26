@@ -33,6 +33,7 @@ This repo can be used to show Consul service discovery, Consul Connect, intentio
 - AWS Route53 Hosted Zone ID
   - required as demo creates FQDNs for instances & load balancers
 - Terraform CLI v0.11 or TFC/TFE workspace with version set to 0.11.4
+  - Terraform 0.12 CLI is supported on the `terraform-0.12` branch
 
 ### AWS AMIs
 
