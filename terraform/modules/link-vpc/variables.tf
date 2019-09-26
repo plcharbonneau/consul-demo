@@ -1,7 +1,7 @@
 # Required
 
 variable "hashi_tags" {
-  type = map(string)
+  type = "map"
 
   default = {
     "TTL"     = ""
@@ -41,4 +41,3 @@ variable "cidr_block_main" {
 variable "cidr_block_alt" {
   description = "The netblock for the alt VPC"
 }
-
