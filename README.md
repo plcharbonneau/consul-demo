@@ -37,13 +37,8 @@ This repo can be used to show Consul service discovery, Consul Connect, intentio
 
 ### AWS AMIs
 
-- AWS AMIs are **publicly** available in `us-east-1` & `us-west-2` (default regions) as well as `us-east-2` & `us-west-1`
-- To customize AMIs:
-  - View the [Packer README](./packer/README.md)
-  - Change the AMI name to avoid name conflict with original
-    - set `AMI_PREFIX` value in `packer/Makefile`
-    - set `ami_prefix` variable in `terraform.auto.tfvars`
-  - set `AMI_OWNER` value to your AWS organization ID
+- AWS AMIs are **publicly** available in `us-east-1`, `us-east-2`, `us-west-1` and `us-west-2`
+- To customize AMIs view the [Packer README](./packer/README.md)
 
 ## First Time Setup
 
@@ -52,7 +47,7 @@ This repo can be used to show Consul service discovery, Consul Connect, intentio
 - the script [reference/push-ssh-key-to-aws.sh](./reference/push-ssh-key-to-aws.sh) pushes an SSH key of your chosing to every region using the AWS CLI
   - edit the value of `aws_keypair_name` and `publickeyfile` before running
 
-> Deploying the demo infrastructure
+### Deploying demo with Terraform CLI
 
 - switch to the directory for the desired demo variant
   - for single region: `cd terraform/single-region-demo`
@@ -63,13 +58,25 @@ This repo can be used to show Consul service discovery, Consul Connect, intentio
 
 Multi-Region Demo Notes:
 
-> The multi-region terraform code uses a post provisioner which requires specifying the AWS ssh key name & the content of the private key (via file reference or as a string)
+> The multi-region terraform code uses a post provisioner which requires specifying the AWS ssh key name & the contents of the private key (via file reference or as a string)
 
 - `ssh_key_name` - must exist with this name in both regions (by default us-west-2 and us-east-1)
 - Must specify either `ssh_pri_key_data` or `ssh_pri_key_file` so that they refer to the Private SSH key for the key specified in `ssh_key_name`
   - `ssh_pri_key_file` - File URL to private key file (does not work with TFC/TFE)
   - `ssh_pri_key_data` - contents of private key as data with newlines replaced with `\n` (required for TFC/TFE)
     - remove newlines with command: `awk '{printf "%s\\n", $0}' ~/.ssh/id_rsa`
+
+### Deploying demo with Terraform Cloud/Enterprise
+
+- Fork this repo
+- Make a copy of the script [reference/setup-tfe-example.sh](.reference/setup-tfe-example.sh) called `setup-tfe.sh`
+  - insure that TFH is installed from link in script
+  - populate User Variables in script
+    - configure for your TFC/TFE organization
+    - change to reference your repo and branch
+    - see `terraform.auto.tfvars.example` for descriptions of variables
+- Run newly created `setup-tfe.sh` script to create TFC/TFE workspaces that are mapped to your repo and populated with the variables specified
+- Note: this curretnly only works with Terraform 0.11.x
 
 ## Demo Script
 
