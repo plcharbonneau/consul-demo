@@ -70,13 +70,13 @@ Multi-Region Demo Notes:
 
 - Fork this repo
 - Make a copy of the script [reference/setup-tfe-example.sh](.reference/setup-tfe-example.sh) called `setup-tfe.sh`
-  - insure that TFH is installed from link in script
+  - install TFH from URL specified in script
   - populate User Variables in script
     - configure for your TFC/TFE organization
     - change to reference your repo and branch
     - see `terraform.auto.tfvars.example` for descriptions of variables
 - Run newly created `setup-tfe.sh` script to create TFC/TFE workspaces that are mapped to your repo and populated with the variables specified
-- Note: this curretnly only works with Terraform 0.11.x
+- Note: currently requires Terraform verion 0.11.x
 
 ## Demo Script
 
@@ -191,7 +191,7 @@ Multi-Region Demo Notes:
 - run `./4-nw-traffic.sh` to show network traffic between `listing` and `mongodb`
 - wait or refresh the web_client web-page to see network trafic
 
-> As we can see, the network traffic is not TLS encrypted gibberish.
+> As we can see, the network traffic is TLS encrypted gibberish.
 
 - Hit _Cntl-C_ to exit network traffic dump
 - you can `exit` the ssh connection to `webclient` instance
