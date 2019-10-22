@@ -40,7 +40,7 @@ SSH_PRI_KEY=$(awk '{printf "%s\\n", $0}' $SSH_PRI_KEY_PATH)
 tfh workspace new $WORKSPACE_SINGLE -org $TFE_ORG -terraform-version $TF_VER -working-dir "terraform/single-region-demo" -vcs-id $REPO_NAME -vcs-branch $REPO_BRANCH
 # Terraform Vars
 tfh pushvars -overwrite-all -dry-run false -name $WORKSPACE_SINGLE -org $TFE_ORG -var "project_name=$PROJ_NAME"
-tfh pushvars -overwrite-all -dry-run false -name $WORKSPACE_SINGLE -org $TFE_ORG -hcl-var "hashi_tags={project=\"$TAG_PROJECT\", owner=\"$TAG_OWNER\", TTL=\"$TAG_TTL\"}"
+tfh pushvars -overwrite-all -dry-run false -name $WORKSPACE_SINGLE -org $TFE_ORG -hcl-var "hashi_tags={Project=\"$TAG_PROJECT\", Owner=\"$TAG_OWNER\", TTL=\"$TAG_TTL\"}"
 tfh pushvars -overwrite-all -dry-run false -name $WORKSPACE_SINGLE -org $TFE_ORG -var "ssh_key_name=$AWS_SSH_KEYNAME"
 tfh pushvars -overwrite-all -dry-run false -name $WORKSPACE_SINGLE -org $TFE_ORG -var "route53_zone_id=$AWS_ROUTE53_ZONE"
 tfh pushvars -overwrite-all -dry-run false -name $WORKSPACE_SINGLE -org $TFE_ORG -var "top_level_domain=$TOP_DOMAIN_NAME"
@@ -57,7 +57,7 @@ tfh pushvars -overwrite-all -dry-run false -name $WORKSPACE_SINGLE -org $TFE_ORG
 tfh workspace new $WORKSPACE_MULTI -org $TFE_ORG -terraform-version $TF_VER -working-dir "terraform/multi-region-demo" -vcs-id $REPO_NAME -vcs-branch $REPO_BRANCH
 # Terraform Vars
 tfh pushvars -overwrite-all -dry-run false -name $WORKSPACE_MULTI -org $TFE_ORG -var "project_name=$PROJ_NAME"
-tfh pushvars -overwrite-all -dry-run false -name $WORKSPACE_MULTI -org $TFE_ORG -hcl-var "hashi_tags={project=\"$TAG_PROJECT\", owner=\"$TAG_OWNER\", TTL=\"$TAG_TTL\"}"
+tfh pushvars -overwrite-all -dry-run false -name $WORKSPACE_MULTI -org $TFE_ORG -hcl-var "hashi_tags={Project=\"$TAG_PROJECT\", Owner=\"$TAG_OWNER\", TTL=\"$TAG_TTL\"}"
 tfh pushvars -overwrite-all -dry-run false -name $WORKSPACE_MULTI -org $TFE_ORG -var "ssh_key_name=$AWS_SSH_KEYNAME"
 tfh pushvars -overwrite-all -dry-run false -name $WORKSPACE_MULTI -org $TFE_ORG -var "route53_zone_id=$AWS_ROUTE53_ZONE"
 tfh pushvars -overwrite-all -dry-run false -name $WORKSPACE_MULTI -org $TFE_ORG -var "top_level_domain=$TOP_DOMAIN_NAME"
