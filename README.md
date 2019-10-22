@@ -32,8 +32,11 @@ This repo can be used to show Consul service discovery, Consul Connect, intentio
 - AWS account & credentials
 - AWS Route53 Hosted Zone ID
   - required as demo creates FQDNs for instances & load balancers
-- Terraform CLI v0.11 or TFC/TFE workspace with version set to 0.11.4
-  - Terraform 0.12 CLI is supported on the `terraform-0.12` branch
+- Terraform version support by branch
+  - Terraform CLI 0.11.x - use `master` branch
+  - TFC/TFE - use `master` or `demo` branches
+    - set Terraform version on workspaces to 0.11.14
+  - Terraform CLI > 0.12.4 - use `terraform-0.12` branch
 
 ### AWS AMIs
 
@@ -42,11 +45,6 @@ This repo can be used to show Consul service discovery, Consul Connect, intentio
 
 ## First Time Setup
 
-> This demo is simplified if you push your system's default ssh key (`~/.ssh/id_rsa.pub`) to the AWS regions used with this demo.
-
-- the script [reference/push-ssh-key-to-aws.sh](./reference/push-ssh-key-to-aws.sh) pushes an SSH key of your chosing to every region using the AWS CLI
-  - edit the value of `aws_keypair_name` and `publickeyfile` before running
-
 ### Deploying demo with Terraform CLI
 
 - switch to the directory for the desired demo variant
@@ -54,46 +52,45 @@ This repo can be used to show Consul service discovery, Consul Connect, intentio
   - for multi-region: `cd terraform/multi-region-demo`
 - Make a copy of the example variables file
   - `cp terraform.auto.tfvars.example terraform.auto.tfvars`
-- Edit `terraform.auto.tfvars` and set the entries as described by the comments
+- Edit `terraform.auto.tfvars` and set values as described in comments
 
 Multi-Region Demo Notes:
 
-> The multi-region terraform code uses a post provisioner which requires specifying the AWS ssh key name & the contents of the private key (via file reference or as a string)
+> The multi-region terraform code uses a post provisioner which requires specifying the AWS ssh key name & the contents of the private key (via file reference or as a string).  This process is simplified if you push your system's default ssh key (~/.ssh/id_rsa.pub) to the AWS regions used with this demo.
 
+- (OPTIONAL) use the script [reference/push-ssh-key-to-aws.sh](./reference/push-ssh-key-to-aws.sh) to push a local SSH key to every region using the AWS CLI
+  - edit the value of `aws_keypair_name` and `publickeyfile` in the script before running
 - `ssh_key_name` - must exist with this name in both regions (by default us-west-2 and us-east-1)
-- Must specify either `ssh_pri_key_data` or `ssh_pri_key_file` so that they refer to the Private SSH key for the key specified in `ssh_key_name`
-  - `ssh_pri_key_file` - File URL to private key file (does not work with TFC/TFE)
+- Must specify either `ssh_pri_key_data` or `ssh_pri_key_file` that refers to the Private SSH key specified in `ssh_key_name`
+  - `ssh_pri_key_file` - is a file URL to the private key (does not work with TFC/TFE)
   - `ssh_pri_key_data` - contents of private key as data with newlines replaced with `\n` (required for TFC/TFE)
     - remove newlines with command: `awk '{printf "%s\\n", $0}' ~/.ssh/id_rsa`
 
-### Deploying demo with Terraform Cloud/Enterprise
+### Setup Terraform Cloud/Enterprise Workspaces
 
 - Fork this repo
-- Make a copy of the script [reference/setup-tfe-example.sh](.reference/setup-tfe-example.sh) called `setup-tfe.sh`
-  - install TFH from URL specified in script
-  - populate User Variables in script
-    - configure for your TFC/TFE organization
-    - change to reference your repo and branch
-    - see `terraform.auto.tfvars.example` for descriptions of variables
-- Run newly created `setup-tfe.sh` script to create TFC/TFE workspaces that are mapped to your repo and populated with the variables specified
-- Note: currently requires Terraform verion 0.11.x
+- Make a copy of the script [reference/setup-tfe-example.sh](.reference/setup-tfe-example.sh) and name it `setup-tfe.sh`
+  - ensure TFH is installed URL specified in script (includes fix not yet incorporated in official release)
+  - populate Variables in script
+    - configure TFC/TFE organization
+    - reference your repo and branch
+    - configure other variables - see `terraform.auto.tfvars.example` for descriptions
+- Run `setup-tfe.sh` script to create TFC/TFE workspaces with VCS connections and populated variables
 
 ## Demo Script
 
 ### Preperation
 
 - Deploy with Terraform (takes 3-4 minutes)
+- (optional) add aliases from Terraform output `working_aliases` to .bash_profile
+  - eliminates need to remove keys from known_hosts before each demo
+- (optional) bookmark web URLs specified in Terraform output `working connections`
+- Edit `~/.ssh/known_hosts` and remove entries from previous demos (unless using ssh aliases)
 - Follow instruction in Terraform output `working connections`
   - Open two URL's in Browser
     - web-page rendered by `web_client` service
     - Consul UI
-    - (optional) bookmark URLs
-  - keep Terraform Output visible by making connection in other Terminal tabs
-  - (optional) add aliases from Terraform output `working_aliases` to .bash_profile
-    - eliminates need to remove keys from known_hosts before each demo
 - Verify the all services are running in Consul UI
-- Edit `~/.ssh/known_hosts` and remove entries from previous demos
-  - unless using ssh aliases from Terraform output `working_aliases`
 
 ### Introduction
 
