@@ -3,10 +3,10 @@
 terraform {
   required_version = "< 0.12"
 
-  # required_providers {
-  # aws    = "~> 2.31"
-  # consul = "~> 2.5"
-  # }
+  required_providers {
+    aws    = "~> 2.33"
+    consul = "~> 2.5"
+  }
 }
 
 # Create Consul demo cluster
