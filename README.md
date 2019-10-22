@@ -32,60 +32,65 @@ This repo can be used to show Consul service discovery, Consul Connect, intentio
 - AWS account & credentials
 - AWS Route53 Hosted Zone ID
   - required as demo creates FQDNs for instances & load balancers
-- Terraform CLI v0.11 or TFC/TFE workspace with version set to 0.11.4
+- Terraform version support by branch
+  - Terraform CLI 0.11.x - use `master` branch
+  - TFC/TFE - use `master` or `demo` branches
+    - set Terraform version on workspaces to 0.11.14
+  - Terraform CLI > 0.12.4 - use `terraform-0.12` branch
 
 ### AWS AMIs
 
-- AWS AMIs are **publicly** available in `us-east-1` & `us-west-2` (default regions) as well as `us-east-2` & `us-west-1`
-- To customize AMIs:
-  - View the [Packer README](./packer/README.md)
-  - Change the AMI name to avoid name conflict with original
-    - set `AMI_PREFIX` value in `packer/Makefile`
-    - set `ami_prefix` variable in `terraform.auto.tfvars`
-  - set `AMI_OWNER` value to your AWS organization ID
+- AWS AMIs are **publicly** available in `us-east-1`, `us-east-2`, `us-west-1` and `us-west-2`
+- To customize AMIs view the [Packer README](./packer/README.md)
 
 ## First Time Setup
 
-> This demo is simplified if you push your system's default ssh key (`~/.ssh/id_rsa.pub`) to the AWS regions used with this demo.
-
-- the script [reference/push-ssh-key-to-aws.sh](./reference/push-ssh-key-to-aws.sh) pushes an SSH key of your chosing to every region using the AWS CLI
-  - edit the value of `aws_keypair_name` and `publickeyfile` before running
-
-> Deploying the demo infrastructure
+### Deploying demo with Terraform CLI
 
 - switch to the directory for the desired demo variant
   - for single region: `cd terraform/single-region-demo`
   - for multi-region: `cd terraform/multi-region-demo`
 - Make a copy of the example variables file
   - `cp terraform.auto.tfvars.example terraform.auto.tfvars`
-- Edit `terraform.auto.tfvars` and set the entries as described by the comments
+- Edit `terraform.auto.tfvars` and set values as described in comments
 
 Multi-Region Demo Notes:
 
-> The multi-region terraform code uses a post provisioner which requires specifying the AWS ssh key name & the content of the private key (via file reference or as a string)
+> The multi-region terraform code uses a post provisioner which requires specifying the AWS ssh key name & the contents of the private key (via file reference or as a string).  This process is simplified if you push your system's default ssh key (~/.ssh/id_rsa.pub) to the AWS regions used with this demo.
 
+- (OPTIONAL) use the script [reference/push-ssh-key-to-aws.sh](./reference/push-ssh-key-to-aws.sh) to push a local SSH key to every region using the AWS CLI
+  - edit the value of `aws_keypair_name` and `publickeyfile` in the script before running
 - `ssh_key_name` - must exist with this name in both regions (by default us-west-2 and us-east-1)
-- Must specify either `ssh_pri_key_data` or `ssh_pri_key_file` so that they refer to the Private SSH key for the key specified in `ssh_key_name`
-  - `ssh_pri_key_file` - File URL to private key file (does not work with TFC/TFE)
+- Must specify either `ssh_pri_key_data` or `ssh_pri_key_file` that refers to the Private SSH key specified in `ssh_key_name`
+  - `ssh_pri_key_file` - is a file URL to the private key (does not work with TFC/TFE)
   - `ssh_pri_key_data` - contents of private key as data with newlines replaced with `\n` (required for TFC/TFE)
     - remove newlines with command: `awk '{printf "%s\\n", $0}' ~/.ssh/id_rsa`
+
+### Setup Terraform Cloud/Enterprise Workspaces
+
+- Fork this repo
+- Make a copy of the script [reference/setup-tfe-example.sh](.reference/setup-tfe-example.sh) and name it `setup-tfe.sh`
+  - ensure TFH is installed URL specified in script (includes fix not yet incorporated in official release)
+  - populate Variables in script
+    - configure TFC/TFE organization
+    - reference your repo and branch
+    - configure other variables - see `terraform.auto.tfvars.example` for descriptions
+- Run `setup-tfe.sh` script to create TFC/TFE workspaces with VCS connections and populated variables
 
 ## Demo Script
 
 ### Preperation
 
 - Deploy with Terraform (takes 3-4 minutes)
+- (optional) add aliases from Terraform output `working_aliases` to .bash_profile
+  - eliminates need to remove keys from known_hosts before each demo
+- (optional) bookmark web URLs specified in Terraform output `working connections`
+- Edit `~/.ssh/known_hosts` and remove entries from previous demos (unless using ssh aliases)
 - Follow instruction in Terraform output `working connections`
   - Open two URL's in Browser
     - web-page rendered by `web_client` service
     - Consul UI
-    - (optional) bookmark URLs
-  - keep Terraform Output visible by making connection in other Terminal tabs
-  - (optional) add aliases from Terraform output `working_aliases` to .bash_profile
-    - eliminates need to remove keys from known_hosts before each demo
 - Verify the all services are running in Consul UI
-- Edit `~/.ssh/known_hosts` and remove entries from previous demos
-  - unless using ssh aliases from Terraform output `working_aliases`
 
 ### Introduction
 
@@ -183,7 +188,7 @@ Multi-Region Demo Notes:
 - run `./4-nw-traffic.sh` to show network traffic between `listing` and `mongodb`
 - wait or refresh the web_client web-page to see network trafic
 
-> As we can see, the network traffic is not TLS encrypted gibberish.
+> As we can see, the network traffic is TLS encrypted gibberish.
 
 - Hit _Cntl-C_ to exit network traffic dump
 - you can `exit` the ssh connection to `webclient` instance
