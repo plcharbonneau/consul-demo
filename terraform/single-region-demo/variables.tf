@@ -8,9 +8,9 @@ variable "hashi_tags" {
   type = "map"
 
   default = {
-    "Poject" = ""
-    "Owner"  = ""
-    "TTL"    = ""
+    "TTL"     = ""
+    "owner"   = ""
+    "project" = ""
   }
 }
 
@@ -48,3 +48,4 @@ variable "consul_lic" {
   description = "License file content for Consul Enterprise"
   default     = ""
 }
+

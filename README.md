@@ -31,8 +31,8 @@ This repo can be used to show Consul service discovery, Consul Connect, intentio
 
 - AWS account & credentials
 - AWS Route53 Hosted Zone ID
-  - required as demo creates FQDNs for instances & load balancers
-- Terraform version support by branch
+  - Terraform creates FQDNs for instances & load balancers
+- Terraform version support
   - Terraform CLI 0.11.x - use `master` branch
   - TFC/TFE - use `master` or `demo` branches
     - set Terraform version on workspaces to 0.11.14
@@ -45,7 +45,7 @@ This repo can be used to show Consul service discovery, Consul Connect, intentio
 
 ## First Time Setup
 
-### Deploying demo with Terraform CLI
+### Deploying with Terraform CLI
 
 - switch to the directory for the desired demo variant
   - for single region: `cd terraform/single-region-demo`
@@ -54,18 +54,6 @@ This repo can be used to show Consul service discovery, Consul Connect, intentio
   - `cp terraform.auto.tfvars.example terraform.auto.tfvars`
 - Edit `terraform.auto.tfvars` and set values as described in comments
 
-Multi-Region Demo Notes:
-
-> The multi-region terraform code uses a post provisioner which requires specifying the AWS ssh key name & the contents of the private key (via file reference or as a string).  This process is simplified if you push your system's default ssh key (~/.ssh/id_rsa.pub) to the AWS regions used with this demo.
-
-- (OPTIONAL) use the script [reference/push-ssh-key-to-aws.sh](./reference/push-ssh-key-to-aws.sh) to push a local SSH key to every region using the AWS CLI
-  - edit the value of `aws_keypair_name` and `publickeyfile` in the script before running
-- `ssh_key_name` - must exist with this name in both regions (by default us-west-2 and us-east-1)
-- Must specify either `ssh_pri_key_data` or `ssh_pri_key_file` that refers to the Private SSH key specified in `ssh_key_name`
-  - `ssh_pri_key_file` - is a file URL to the private key (does not work with TFC/TFE)
-  - `ssh_pri_key_data` - contents of private key as data with newlines replaced with `\n` (required for TFC/TFE)
-    - remove newlines with command: `awk '{printf "%s\\n", $0}' ~/.ssh/id_rsa`
-
 ### Setup Terraform Cloud/Enterprise Workspaces
 
 - Fork this repo
@@ -73,18 +61,33 @@ Multi-Region Demo Notes:
   - ensure TFH is installed URL specified in script (includes fix not yet incorporated in official release)
   - populate Variables in script
     - configure TFC/TFE organization
-    - reference your repo and branch
+    - specify your repo and branch
+    - specify workspaces names for `single-region-demo` and `multi-region-demo`
+      - script sets working directory for each workspace
     - configure other variables - see `terraform.auto.tfvars.example` for descriptions
-- Run `setup-tfe.sh` script to create TFC/TFE workspaces with VCS connections and populated variables
+- Run `setup-tfe.sh` to create TFC/TFE workspaces with VCS connections and populated variables
+
+### Multi-Region Demo Notes
+
+> The multi-region terraform code uses a post provisioner which requires specifying the AWS ssh keyname & the ssh private key itself (via file reference or as a string).  This process is simplified if you push your system's default ssh key (~/.ssh/id_rsa.pub) to the AWS regions used with this demo.
+
+- (OPTIONAL) use script [reference/push-ssh-key-to-aws.sh](./reference/push-ssh-key-to-aws.sh) to push local SSH key to every AWS region using AWS CLI
+  - edit script and set value of `aws_keypair_name` and `publickeyfile`
+- Set Terraform variables (in `terraform.auto.tfvars` or `setup-tfe.sh`)
+  - `ssh_key_name` - must exist in both AWS regions (default: us-west-2 & us-east-1)
+  - Specify either `ssh_pri_key_data` or `ssh_pri_key_file` that refers to private SSH key referenced by `ssh_key_name`
+    - `ssh_pri_key_file` - file path to the private key (does not work with TFC/TFE)
+    - `ssh_pri_key_data` - contents of private key as data with newlines replaced with `\n` (required for TFC/TFE)
+      - remove newlines with command: `awk '{printf "%s\\n", $0}' ~/.ssh/id_rsa`
 
 ## Demo Script
 
 ### Preperation
 
 - Deploy with Terraform (takes 3-4 minutes)
-- (optional) add aliases from Terraform output `working_aliases` to .bash_profile
+- (OPTIONAL) add aliases from Terraform output `working_aliases` to .bash_profile
   - eliminates need to remove keys from known_hosts before each demo
-- (optional) bookmark web URLs specified in Terraform output `working connections`
+- (OPTIONAL) bookmark web URLs specified in Terraform output `working connections`
 - Edit `~/.ssh/known_hosts` and remove entries from previous demos (unless using ssh aliases)
 - Follow instruction in Terraform output `working connections`
   - Open two URL's in Browser
