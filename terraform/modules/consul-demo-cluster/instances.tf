@@ -25,7 +25,7 @@ resource "aws_instance" "consul" {
   tags = merge(var.hashi_tags,
     { "Name" = "${local.unique_proj_id}-consul-server" },
     { "role" = "consul-server" },
-    { "consul-cluster-name" = replace("consul-cluster-${local.unique_proj_id}-${var.hashi_tags["Owner"]}", " ", "", ) },
+    { "consul-cluster-name" = replace("consul-cluster-${local.unique_proj_id}-${var.hashi_tags["owner"]}", " ", "", ) },
     { "consul-cluster-dc-name" = var.consul_dc },
     { "consul-cluster-acl-dc-name" = var.consul_acl_dc },
   )
@@ -55,7 +55,7 @@ resource "aws_instance" "webclient" {
   tags = merge(var.hashi_tags,
     { "Name" = "${local.unique_proj_id}-webclient-server-${count.index}" },
     { "role" = "webclient-server" },
-    { "consul-cluster-name" = replace("consul-cluster-${local.unique_proj_id}-${var.hashi_tags["Owner"]}", " ", "", ) },
+    { "consul-cluster-name" = replace("consul-cluster-${local.unique_proj_id}-${var.hashi_tags["owner"]}", " ", "", ) },
     { "consul-cluster-dc-name" = var.consul_dc },
     { "consul-cluster-acl-dc-name" = var.consul_acl_dc },
   )
@@ -87,7 +87,7 @@ resource "aws_instance" "listing-api" {
   tags = merge(var.hashi_tags,
     { "Name" = "${local.unique_proj_id}-listing-api-server-${count.index}" },
     { "role" = "listing-api-server" },
-    { "consul-cluster-name" = replace("consul-cluster-${local.unique_proj_id}-${var.hashi_tags["Owner"]}", " ", "", ) },
+    { "consul-cluster-name" = replace("consul-cluster-${local.unique_proj_id}-${var.hashi_tags["owner"]}", " ", "", ) },
     { "consul-cluster-dc-name" = var.consul_dc },
     { "consul-cluster-acl-dc-name" = var.consul_acl_dc },
   )
@@ -119,7 +119,7 @@ resource "aws_instance" "product-api" {
   tags = merge(var.hashi_tags,
     { "Name" = "${local.unique_proj_id}-product-api-server-${count.index}" },
     { "role" = "product-api-server" },
-    { "consul-cluster-name" = replace("consul-cluster-${local.unique_proj_id}-${var.hashi_tags["Owner"]}", " ", "", ) },
+    { "consul-cluster-name" = replace("consul-cluster-${local.unique_proj_id}-${var.hashi_tags["owner"]}", " ", "", ) },
     { "consul-cluster-dc-name" = var.consul_dc },
     { "consul-cluster-acl-dc-name" = var.consul_acl_dc },
   )
@@ -151,7 +151,7 @@ resource "aws_instance" "mongo" {
   tags = merge(var.hashi_tags,
     { "Name" = "${local.unique_proj_id}-mongo-server-${count.index}" },
     { "role" = "mongo-server" },
-    { "consul-cluster-name" = replace("consul-cluster-${local.unique_proj_id}-${var.hashi_tags["Owner"]}", " ", "", ) },
+    { "consul-cluster-name" = replace("consul-cluster-${local.unique_proj_id}-${var.hashi_tags["owner"]}", " ", "", ) },
     { "consul-cluster-dc-name" = var.consul_dc },
     { "consul-cluster-acl-dc-name" = var.consul_acl_dc },
   )

@@ -8,9 +8,9 @@ variable "hashi_tags" {
   type = map(string)
 
   default = {
-    "Project" = ""
-    "Owner"   = ""
     "TTL"     = ""
+    "owner"   = ""
+    "project" = ""
   }
 }
 
