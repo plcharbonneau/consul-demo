@@ -8,8 +8,8 @@
 project_name = "rpeteuil-consul-demo"
 
 hashi_tags = {
-  "Project" = "RPeteuil Consul Demo"
-  "Owner"   = "rpeteuil@hashicorp.com"
+  "project" = "RPeteuil Consul Demo"
+  "owner"   = "rpeteuil@hashicorp.com"
   "TTL"     = "6"
 }
 

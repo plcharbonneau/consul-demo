@@ -5,8 +5,8 @@ variable "hashi_tags" {
 
   default = {
     "TTL"     = ""
-    "Owner"   = ""
-    "Project" = ""
+    "owner"   = ""
+    "project" = ""
   }
 }
 
