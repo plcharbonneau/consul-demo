@@ -97,7 +97,7 @@ This repo can be used to show Consul service discovery, Consul Connect, intentio
 
 ### Introduction
 
-- Show *High Level Architecture* diagram
+- Show [High Level Architecture](./diagrams/1-High-Level-Architecture-sm.png) diagram
 
 > Explain the three tiers and communications between the services.  We are going to start by discussing Service Discovery and Service Registration
 
@@ -198,7 +198,7 @@ This repo can be used to show Consul service discovery, Consul Connect, intentio
 
 > Next we're going to talk about Consul Service Mesh and some of the enhancements it brings.
 
-- Show *Consul Config Single DC* diagram
+- Show [Consul Configuration Single DC](./diagrams/3-Consul-Config-Single-DC-sm.png) diagram
 
 > You'll notice that the Front Tier and Middle tier have sidecar-proxies.  They are configured to communicate via Consul Service Mesh.  The Back Tier is configured to only use Service Discovery.
 
@@ -230,7 +230,7 @@ This repo can be used to show Consul service discovery, Consul Connect, intentio
 
 > The sidecar proxies use TLS to encrypt communications.
 
-- run `./4-nw-traffic.sh` to show network traffic between `listing` and `mongodb`
+- run `./4-nw-traffic.sh` to show network traffic between `webclient` and `product`
 - wait or refresh the web_client web-page to see network traffic
 
 > As we can see, the network traffic is TLS encrypted gibberish.
