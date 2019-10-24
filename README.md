@@ -152,48 +152,6 @@ This repo can be used to show Consul service discovery, Consul Connect, intentio
 - Hit _Cntl-C_ to exit network traffic dump
 - you can `exit` the ssh connection to `listing` instance
 
-### Configuration K/V (OPTIONAL)
-
-> Describe how the web_client service has been displaying configuration information from Consul's K/V store.
-
-- Show Web Client web page, point out **Configuration** Section
-  - the `product` service reads the Consul K/V store (along with the mongodb records)
-  - data returns to `web_client` and displayed
-
-### Datacenter Failover - (MULTI-REGION DEMO ONLY)
-
-> Webclient service is configured to use a "prepared query" to find the `product` service.  If every product service in the current DC fails, it looks for the service in other DCs.  Additional info on the prepared query can be found in the [prepared_query reference](./reference/prepared_query.md)
-
-- Show Web Client web page
-  - point out **Configuration** Section under Product API
-  - shows **datacenter = dc1**
-
-> Now we're going to trigger the product service to fail in this datacenter.
-
-- Open Consul UI and select Key/Value tab (make sure it's in dc1)
-  - Click on `product` folder and value `run`
-  - Change value from `true` to `false`
-- Switch to the Consul UI services and watch the `product` services fail their health checks
-  - wait until there are two failures for `product` and its proxy
-
-> Now that the service has failed, let view the webpage.
-
-- Show Web Client web page & hit refresh
-  - point out **Configuration** Section under Product API
-  - now shows **datacenter = dc2**, as the instance responding is in DC2
-
-#### Datacenter Failover - Optional Drill-down (MULTI-REGION DEMO ONLY)
-
-- ssh into any one of the previous servers (in DC1)
-- type `dig +short product.connect.consul srv`
-  - no product services are available in this DC
-- type `dig +short product.query.consul srv`
-  - but by searching the prepared query (as the web_client is doing) shows services in the other datacenter
-- disable the failover by setting the `product/run` key back to `true`
-  - wait for the services to become active again in DC1
-  - type `dig +short product.query.consul srv` and show how he results have changed back to this DC
-  - type `dig +short product.connect.consul srv` - shows the same results as the query, as all the services in this DC are working
-
 ### Consul Service Mesh
 
 > Next we're going to talk about Consul Service Mesh and some of the enhancements it brings.
@@ -290,3 +248,45 @@ This repo can be used to show Consul service discovery, Consul Connect, intentio
   2. `product` knows _nothing_ about mutual-TLS authentication
   3. `product` doesn't have to manage certificates, keys, CRLs, CA certs...
   4. `product` simply sees _simple, unencrypted traffic_ coming to it
+
+### Configuration K/V (OPTIONAL)
+
+> Describe how the web_client service has been displaying configuration information from Consul's K/V store.
+
+- Show Web Client web page, point out **Configuration** Section
+  - the `product` service reads the Consul K/V store (along with the mongodb records)
+  - data returns to `web_client` and displayed
+
+### Datacenter Failover - (MULTI-REGION DEMO ONLY)
+
+> Webclient service is configured to use a "prepared query" to find the `product` service.  If every product service in the current DC fails, it looks for the service in other DCs.  Additional info on the prepared query can be found in the [prepared_query reference](./reference/prepared_query.md)
+
+- Show Web Client web page
+  - point out **Configuration** Section under Product API
+  - shows **datacenter = dc1**
+
+> Now we're going to trigger the product service to fail in this datacenter.
+
+- Open Consul UI and select Key/Value tab (make sure it's in dc1)
+  - Click on `product` folder and value `run`
+  - Change value from `true` to `false`
+- Switch to the Consul UI services and watch the `product` services fail their health checks
+  - wait until there are two failures for `product` and its proxy
+
+> Now that the service has failed, let view the webpage.
+
+- Show Web Client web page & hit refresh
+  - point out **Configuration** Section under Product API
+  - now shows **datacenter = dc2**, as the instance responding is in DC2
+
+#### Datacenter Failover - Optional Drill-down (MULTI-REGION DEMO ONLY)
+
+- ssh into any one of the previous servers (in DC1)
+- type `dig +short product.connect.consul srv`
+  - no product services are available in this DC
+- type `dig +short product.query.consul srv`
+  - but by searching the prepared query (as the web_client is doing) shows services in the other datacenter
+- disable the failover by setting the `product/run` key back to `true`
+  - wait for the services to become active again in DC1
+  - type `dig +short product.query.consul srv` and show how he results have changed back to this DC
+  - type `dig +short product.connect.consul srv` - shows the same results as the query, as all the services in this DC are working
