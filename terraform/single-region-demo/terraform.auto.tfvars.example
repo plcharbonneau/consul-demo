@@ -23,10 +23,17 @@ top_level_domain = "test.example.com"
 #   https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html
 ssh_key_name = "rpeteuil"
 
-### OPTIONAL 
+### CONSUL LICENSE KEY - HIGHLY RECOMMENDED 
 
-# Consul Enterprise License Key (if exists)
+# Consul Enterprise License Key
 # consul_lic = "consul-enterprise-license-string-here"
+
+#   If Consul License not provided - Consul service will shutdown (on all hosts) in 30m
+#     Terraform will be unable to destroy the environment since Consul is not running
+#   To repair demo environment after shutdown
+#     Reboot or restart the consul service on each host (including clients)
+
+### OPTIONAL 
 
 # Consul Cluster region and DC Name
 # aws_region = "us-west-2"

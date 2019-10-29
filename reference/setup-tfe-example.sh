@@ -27,7 +27,12 @@ AWS_SSH_KEYNAME="rpeteuil"
 AWS_ROUTE53_ZONE="ZZZZZZZZZZZZZZ"
 TOP_DOMAIN_NAME="test.example.com"
 SSH_PRI_KEY_PATH="$HOME/.ssh/id_rsa"  # Path to SSH Private Key File
-# CONSUL_ENT_LICENSE=""
+CONSUL_ENT_LICENSE=""                 # HIGHLY RECOMMENDED
+
+# If Consul License not provided - Consul service will shutdown (on all hosts) in 30m
+#   Terraform will be unable to destroy the environment since Consul is not running
+# To repair demo environment after shutdown
+#   Reboot or restart the consul service on each host (including clients)
 
 
 ### INTERNAL VARIABLES
