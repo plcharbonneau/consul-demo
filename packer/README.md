@@ -2,7 +2,7 @@
 
 The code which built all of the images is in the `packer` directory. The Packer code is there to enable customization of the demo, and view application configuration changes as you investigate Consul.
 
-Note: These packer template build **Public** AMI's by default.  If you want your AMIs to be private, edit the Packer templates and remove the statement `"ami_groups": ["all"]` from the end of the `amazon-ebs` `builder` block; make sure to remove the comma at the end of the preceeding line.
+Note: These packer template build **Public** AMI's by default.  If you want your AMIs to be private, edit the Packer templates and remove the statement `"ami_groups": ["all"]` from the end of the `amazon-ebs` `builder` block; make sure to remove the comma at the end of the proceeding line.
 
 ## Building Images
 

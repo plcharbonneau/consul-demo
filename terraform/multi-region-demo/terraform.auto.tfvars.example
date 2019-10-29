@@ -34,10 +34,17 @@ ssh_key_name = "rpeteuil"
 # ssh_pri_key_file - file URL to private key file (does not work with TFC/TFE)
 ssh_pri_key_file = "~/.ssh/id_rsa"
 
-### OPTIONAL 
+### CONSUL LICENSE KEY - HIGHLY RECOMMENDED 
 
 # Consul Enterprise License Key
 # consul_lic = "consul-enterprise-license-string-here"
+
+#   If Consul License not provided - Consul service will shutdown (on all hosts) in 30m
+#     Terraform will be unable to destroy the environment since Consul is not running
+#   To repair demo environment after shutdown
+#     Reboot or restart the consul service on each host (including clients)
+
+### OPTIONAL 
 
 # Main Consul Cluster region and DC Name
 # aws_region = "us-west-2"
