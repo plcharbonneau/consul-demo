@@ -37,6 +37,12 @@ This repo can be used to show Consul service discovery, Consul Connect, intentio
   - TFC/TFE - use `master` or `demo` branches
     - set Terraform version on workspaces to 0.11.14
   - Terraform CLI > 0.12.4 - use `terraform-0.12` branch
+- Consul Enterprise License (Highly Recommended)
+  - If not specified - Consul Enterprise demo-binary will shutdown in 30m
+  - After no-license shutdown
+    - demo will no longer work and `terraform destroy` will fail
+    - fix by rebooting each host (or restart consul service on each host)
+      - this re-starts Consul as Open Source Consul
 
 ### AWS AMIs
 
