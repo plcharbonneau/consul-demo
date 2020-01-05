@@ -25,7 +25,7 @@
 | consul\_dc | Consul cluster DC name | string | `"dc1"` | no |
 | consul\_lic | License file content for Consul Enterprise | string | `""` | no |
 | consul\_servers\_count | How many Consul servers to create in each region | string | `"3"` | no |
-| hashi\_tags |  | map | `<map>` | no |
+| hashi\_tags | Tags to apply to resources | map | `<map>` | no |
 | internal\_netblock | Global netblock | string | `"10.0.0.0/8"` | no |
 | server\_machine\_type | The machine type \(size\) to deploy | string | `"t2.micro"` | no |
 | vpc\_netblock | The netblock for this deployment's VPC | string | `"10.0.0.0/16"` | no |

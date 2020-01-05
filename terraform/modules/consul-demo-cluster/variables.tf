@@ -5,6 +5,7 @@ variable "project_name" {
 
 variable "hashi_tags" {
   type = "map"
+  description = "Tags to apply to resources" 
 
   default = {
     "TTL"     = "24"
