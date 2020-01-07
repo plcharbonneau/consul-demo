@@ -64,7 +64,6 @@ This repo can be used to show Consul service discovery, Consul Connect, intentio
 
 - Fork this repo
 - Make a copy of the script [reference/setup-tfe-example.sh](.reference/setup-tfe-example.sh) and name it `setup-tfe.sh`
-  - ensure TFH is installed URL specified in script (includes fix not yet incorporated in official release)
   - populate Variables in script
     - configure TFC/TFE organization
     - specify your repo and branch
