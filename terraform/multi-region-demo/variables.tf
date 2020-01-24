@@ -1,4 +1,5 @@
-# Required
+# REQUIRED
+
 variable "project_name" {
   type        = string
   description = "Set this, resources are given a unique name based on this"
@@ -8,10 +9,14 @@ variable "hashi_tags" {
   type = map(string)
 
   default = {
-    "TTL"     = ""
-    "owner"   = ""
-    "project" = ""
+    "TTL"     = "24"
+    "owner"   = "HashiCorpDemo"
+    "project" = "ConsulDemo001"
   }
+}
+
+variable "ssh_key_name" {
+  description = "Name of existing AWS ssh key"
 }
 
 variable "route53_zone_id" {
@@ -22,11 +27,7 @@ variable "top_level_domain" {
   description = "The top-level domain to put all Route53 records"
 }
 
-variable "ssh_key_name" {
-  description = "Name of existing AWS ssh key"
-}
-
-# One of these two must be specified
+# One of these ssh_pri_key variables must be specified
 
 variable "ssh_pri_key_file" {
   description = "File URL to Private SSH key for post provisioning config"
@@ -38,7 +39,7 @@ variable "ssh_pri_key_data" {
   default     = ""
 }
 
-# Optional
+# OPTIONAL
 
 # Images in us-east-1, us-east-2, us-west-1 and us-west-2
 variable "aws_region" {
