@@ -1,29 +1,21 @@
 # Required
 variable "project_name" {
-  type        = "string"
-  description = "Set this, resources are given a unique name based on this"
+  description = "Project Name - used to set unique resource names"
 }
 
 variable "hashi_tags" {
   type = "map"
+  description = "Tags to apply to resources" 
 
   default = {
-    "TTL"     = ""
-    "owner"   = ""
-    "project" = ""
+    "TTL"     = "24"
+    "owner"   = "HashiCorpDemo"
+    "project" = "ConsulDemo001"
   }
 }
 
 variable "ssh_key_name" {
   description = "Name of existing AWS ssh key"
-}
-
-variable "consul_dc" {
-  description = "Consul cluster DC name"
-}
-
-variable "consul_acl_dc" {
-  description = "Consul ACL cluster name"
 }
 
 variable "route53_zone_id" {
@@ -36,6 +28,31 @@ variable "top_level_domain" {
 
 # Optional
 
+variable "aws_region" {
+  description = "Region into which to deploy"
+  default     = "us-west-2"
+}
+
+variable "consul_lic" {
+  description = "License file content for Consul Enterprise"
+  default     = ""
+}
+
+variable "consul_dc" {
+  description = "Consul cluster DC name"
+  default     = "dc1"
+}
+
+variable "consul_acl_dc" {
+  description = "Consul ACL cluster name"
+  default     = "dc1"
+}
+
+variable "ami_owner" {
+  description = "AWS account which owns AMIs"
+  default     = "753646501470"                # hc-sc-demos-2018
+}
+
 variable "ami_prefix" {
   description = "prefix of AMI images to use when building instances"
   default     = "consul-demo"
@@ -44,12 +61,6 @@ variable "ami_prefix" {
 variable "server_machine_type" {
   description = "The machine type (size) to deploy"
   default     = "t2.micro"
-}
-
-# Images currently only exist in us-west-2
-variable "aws_region" {
-  description = "Region into which to deploy"
-  default     = "us-west-2"
 }
 
 variable "client_machine_type" {
@@ -80,16 +91,6 @@ variable "client_listing_count" {
 variable "client_webclient_count" {
   description = "The number of webclients to create in each region"
   default     = "2"
-}
-
-variable "ami_owner" {
-  description = "AWS account which owns AMIs"
-  default     = "753646501470"                # hc-sc-demos-2018
-}
-
-variable "consul_lic" {
-  description = "License file content for Consul Enterprise"
-  default     = ""
 }
 
 variable "vpc_netblock" {
