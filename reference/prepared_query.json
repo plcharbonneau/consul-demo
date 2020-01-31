@@ -1,0 +1,14 @@
+{
+    "Name": "product",
+    "Service": {
+        "Service": "product",
+        "Failover": {
+            "Datacenters": [
+                "dc2",
+                "dc1"
+            ]
+        },
+        "OnlyPassing": true,
+        "Connect": true
+    }
+}
