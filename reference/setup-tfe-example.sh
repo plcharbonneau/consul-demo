@@ -3,8 +3,7 @@
 # Create TFC/TFE workspace for consul-demo
 #   https://github.com/robertpeteuil/consul-demo
 #
-# requires TFH utility
-#   Temporarily, use this fork: https://github.com/robertpeteuil/tf-helper
+# requires TFH utility: https://github.com/hashicorp-community/tf-helper
 
 
 ### USER VARIABLES
