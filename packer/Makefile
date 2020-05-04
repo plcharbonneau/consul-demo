@@ -4,7 +4,7 @@ ENCRYPT_CONFIG := files/encrypt.hcl
 # 	 using ami_prefix parameter for consul-demo-cluster module
 AMI_PREFIX="consul-demo"
 AMI_OWNER=753646501470
-CONSUL_VER="1.6.1"
+CONSUL_VER="1.7.2"
 
 DEFAULT:
 	@echo Run 'make aws' to build appropriate images
