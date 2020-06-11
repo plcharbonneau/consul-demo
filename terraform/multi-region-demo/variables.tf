@@ -1,4 +1,5 @@
-# Required
+# REQUIRED
+
 variable "project_name" {
   type        = "string"
   description = "Set this, resources are given a unique name based on this"
@@ -6,6 +7,7 @@ variable "project_name" {
 
 variable "hashi_tags" {
   type = "map"
+  description = "Tags to apply to resources"
 
   default = {
     "TTL"     = ""
@@ -26,7 +28,7 @@ variable "top_level_domain" {
   description = "The top-level domain to put all Route53 records"
 }
 
-# One of these two must be specified
+# One of these ssh_pri_key variables must be specified
 
 variable "ssh_pri_key_file" {
   description = "File URL to Private SSH key for post provisioning config"
@@ -38,11 +40,11 @@ variable "ssh_pri_key_data" {
   default     = ""
 }
 
-# Optional
+# OPTIONAL
 
 # Images in us-east-1, us-east-2, us-west-1 and us-west-2
 variable "aws_region" {
-  description = "Region into which to deploy"
+  description = "Region into which to deploy primary cluster"
   default     = "us-west-2"
 }
 
@@ -51,9 +53,8 @@ variable "consul_dc" {
   default     = "dc1"
 }
 
-# Region to deploy alternate cluster
 variable "aws_region_alt" {
-  description = "Region into which to deploy"
+  description = "Region into which to deploy alt cluster"
   default     = "us-east-1"
 }
 
@@ -81,63 +82,3 @@ variable "vpc_cidr_alt" {
   description = "The netblock for the alt VPC"
   default     = "10.128.0.0/16"
 }
-
-# variable "server_machine_type" {
-#   description = "The machine type (size) to deploy"
-#   default     = "t2.micro"
-# }
-
-
-# variable "client_machine_type" {
-#   description = "The machine type (size) to deploy"
-#   default     = "t2.micro"
-# }
-
-
-# variable "consul_servers_count" {
-#   description = "How many Consul servers to create in each region"
-#   default     = "3"
-# }
-
-
-# variable "client_db_count" {
-#   description = "The number of client machines to create in each region"
-#   default     = "1"
-# }
-
-
-# variable "client_product_count" {
-#   description = "The number of product machines to create in each region"
-#   default     = "2"
-# }
-
-
-# variable "client_listing_count" {
-#   description = "The number of listing machines to create in each region"
-#   default     = "2"
-# }
-
-
-# variable "client_webclient_count" {
-#   description = "The number of webclients to create in each region"
-#   default     = "2"
-# }
-
-
-# variable "ami_owner" {
-#   description = "AWS account which owns AMIs"
-#   default     = "753646501470"                # hc-sc-demos-2018
-# }
-
-
-# variable "vpc_netblock" {
-#   description = "The netblock for this deployment's VPC"
-#   default     = "10.0.0.0/16"
-# }
-
-
-# variable "internal_netblock" {
-#   description = "Global netblock"
-#   default     = "10.0.0.0/8"
-# }
-
