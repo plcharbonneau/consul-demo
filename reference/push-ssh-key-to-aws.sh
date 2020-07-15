@@ -4,7 +4,7 @@ set -e
 
 # Push local ssh key to every region in AWS using AWS CLI
 
-# CHECK DEPENDANCY
+# CHECK DEPENDENCY
 if ! aws --version 2&> /dev/null; then
   echo "aborting - aws cli not installed and required"
   exit 1
