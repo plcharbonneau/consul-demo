@@ -9,6 +9,8 @@ aws_keypair_name="$USER"  # or some name that is meaningful to you
 # path to PUBLIC ssh key that you want pushed to AWS
 publickeyfile="$HOME/.ssh/id_rsa.pub"
 
+keydata=$(cat $publickeyfile | base64)
+
 regions=$(aws ec2 describe-regions \
   --output text \
   --query 'Regions[*].RegionName')
@@ -18,5 +20,5 @@ for region in $regions; do
   aws ec2 import-key-pair \
     --region "$region" \
     --key-name "$aws_keypair_name" \
-    --public-key-material "file://$publickeyfile"
+    --public-key-material "$keydata"
 done
