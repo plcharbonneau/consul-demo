@@ -63,6 +63,11 @@ variable "consul_dc_alt" {
   default     = "dc2"
 }
 
+variable "ami_owner" {
+  description = "AWS account which owns AMIs"
+  default     = "self"
+}
+
 variable "ami_prefix" {
   description = "prefix of AMI images to use when building instances"
   default     = "consul-demo"

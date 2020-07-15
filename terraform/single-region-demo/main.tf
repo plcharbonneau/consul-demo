@@ -21,6 +21,7 @@ module "cluster_main" {
   route53_zone_id  = var.route53_zone_id
   ssh_key_name     = var.ssh_key_name
   consul_lic       = var.consul_lic
+  ami_owner        = var.ami_owner
   ami_prefix       = var.ami_prefix
 
   hashi_tags = var.hashi_tags

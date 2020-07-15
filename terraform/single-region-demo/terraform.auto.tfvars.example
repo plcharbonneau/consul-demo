@@ -32,5 +32,8 @@ top_level_domain = "test.example.com"
 # aws_region = "us-west-2"
 # consul_dc  = "dc1"
 
+# Account of AMI (defaults to self)
+# ami_owner = "self"
+
 # AMI prefix name - set if custom AMI's created
 # ami_prefix = "consul-demo"
