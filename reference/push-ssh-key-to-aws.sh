@@ -4,11 +4,16 @@ set -e
 
 # Push local ssh key to every region in AWS using AWS CLI
 
+# CHECK DEPENDANCY
+if ! aws --version 2&> /dev/null; then
+  echo "aborting - aws cli not installed and required"
+  exit 1
+fi
+
 # Set aws_keypair_name to the EC2 key-name in each AWS Region
 #   it must be unique in each region within your account
 aws_keypair_name="${1:-$USER}"  # use 1st param or current user
-
-# path to PUBLIC ssh key that you want pushed to AWS
+# path of PUBLIC ssh key to push to AWS
 publickeyfile="$HOME/.ssh/id_rsa.pub"
 
 keydata=$(cat $publickeyfile | base64)
