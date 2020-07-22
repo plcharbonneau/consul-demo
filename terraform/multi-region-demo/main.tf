@@ -10,11 +10,23 @@ terraform {
   }
 }
 
+provider "aws" {
+  region = var.aws_region
+  alias  = "main"
+}
+
+provider "aws" {
+  region = var.aws_region_alt
+  alias  = "alt"
+}
+
 # Create MAIN Consul Connect cluster
 module "cluster_main" {
   source = "../modules/consul-demo-cluster"
+  providers = {
+    aws = aws.main
+  }
 
-  aws_region       = var.aws_region
   consul_dc        = var.consul_dc
   consul_acl_dc    = var.consul_dc
   vpc_netblock     = var.vpc_cidr_main
@@ -32,8 +44,10 @@ module "cluster_main" {
 # Create ALTERNATE Consul Connect cluster
 module "cluster_alt" {
   source = "../modules/consul-demo-cluster"
+  providers = {
+    aws = aws.alt
+  }
 
-  aws_region       = var.aws_region_alt
   consul_dc        = var.consul_dc_alt
   consul_acl_dc    = var.consul_dc
   vpc_netblock     = var.vpc_cidr_alt
@@ -51,13 +65,15 @@ module "cluster_alt" {
 # Link VPCs
 module "link_vpc" {
   source = "../modules/link-vpc"
+  providers = {
+    aws.main = aws.main
+    aws.alt  = aws.alt
+  }
 
-  aws_region_main     = module.cluster_main.aws_region
   vpc_id_main         = module.cluster_main.vpc_id
   route_table_id_main = module.cluster_main.vpc_public_route_table_id
   cidr_block_main     = module.cluster_main.vpc_netblock
 
-  aws_region_alt     = module.cluster_alt.aws_region
   vpc_id_alt         = module.cluster_alt.vpc_id
   route_table_id_alt = module.cluster_alt.vpc_public_route_table_id
   cidr_block_alt     = module.cluster_alt.vpc_netblock

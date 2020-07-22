@@ -5,8 +5,8 @@ variable "project_name" {
 }
 
 variable "hashi_tags" {
-  type = map(string)
-  description = "Tags to apply to resources" 
+  type        = map(string)
+  description = "Tags to apply to resources"
 
   default = {
     "TTL"     = "24"
@@ -28,11 +28,6 @@ variable "top_level_domain" {
 }
 
 # Optional
-
-variable "aws_region" {
-  description = "Region into which to deploy"
-  default     = "us-west-2"
-}
 
 variable "consul_lic" {
   description = "License file content for Consul Enterprise"

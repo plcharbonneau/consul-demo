@@ -1,7 +1,7 @@
 # Outputs
 
 output "main_cluster_region" {
-  value = module.cluster_main.aws_region
+  value = var.aws_region
 }
 
 output "main_consul_lb" {

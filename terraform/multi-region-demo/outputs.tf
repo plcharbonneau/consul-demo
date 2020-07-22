@@ -2,7 +2,7 @@
 
 # Main Cluster Region
 output "main_region" {
-  value = module.cluster_main.aws_region
+  value = var.aws_region
 }
 
 output "main_consul_lb" {
@@ -35,7 +35,7 @@ output "main_product_api_servers" {
 
 # Alternate Cluster Outputs
 output "secondary_region" {
-  value = module.cluster_alt.aws_region
+  value = var.aws_region_alt
 }
 
 output "secondary_consul_lb" {

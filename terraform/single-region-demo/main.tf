@@ -9,11 +9,14 @@ terraform {
   }
 }
 
+provider "aws" {
+  region = var.aws_region
+}
+
 # Create Consult Connect demo cluster
 module "cluster_main" {
   source = "../modules/consul-demo-cluster"
 
-  aws_region       = var.aws_region
   consul_dc        = var.consul_dc
   consul_acl_dc    = var.consul_dc
   project_name     = var.project_name

@@ -1,16 +1,18 @@
 # Link two AWS VPCs and add Routes
 
 provider "aws" {
-  region = var.aws_region_main
-  alias  = "main"
+  alias = "main"
 }
 
 provider "aws" {
-  region = var.aws_region_alt
-  alias  = "alt"
+  alias = "alt"
 }
 
 data "aws_caller_identity" "alt" {
+  provider = aws.alt
+}
+
+data "aws_region" "alt" {
   provider = aws.alt
 }
 
@@ -19,7 +21,7 @@ resource "aws_vpc_peering_connection" "main" {
   vpc_id        = var.vpc_id_main
   peer_vpc_id   = var.vpc_id_alt
   peer_owner_id = data.aws_caller_identity.alt.account_id
-  peer_region   = var.aws_region_alt
+  peer_region   = data.aws_region.alt.name
   auto_accept   = false
 
   tags = merge({ "Name" = "prod-main-alt-link" }, { "Side" = "Requestor" }, var.hashi_tags, )

@@ -10,14 +10,6 @@ variable "hashi_tags" {
   }
 }
 
-variable "aws_region_main" {
-  description = "Main AWS Region"
-}
-
-variable "aws_region_alt" {
-  description = "Alt AWS Region"
-}
-
 variable "vpc_id_main" {
   description = "Main VPC ID"
 }
