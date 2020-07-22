@@ -10,7 +10,7 @@
 
 # Repo settings
 REPO_NAME="robertpeteuil/consul-demo"
-REPO_BRANCH="demo"
+REPO_BRANCH="terraform-0.11"
 
 # TFC/TFE settings
 TFE_ORG="my-tfe-org"
