@@ -19,12 +19,8 @@ variable "ssh_key_name" {
   description = "Name of existing AWS ssh key"
 }
 
-variable "route53_zone_id" {
-  description = "Route 53 zone into which to place hostnames"
-}
-
-variable "top_level_domain" {
-  description = "The top-level domain to put all Route53 records"
+variable "route53_subzone" {
+  description = "where host records will be created"
 }
 
 # Optional
@@ -46,7 +42,7 @@ variable "consul_acl_dc" {
 
 variable "ami_owner" {
   description = "AWS account which owns AMIs"
-  default     = "753646501470" # hc-sc-demos-2018
+  default     = "self"
 }
 
 variable "ami_prefix" {
