@@ -9,8 +9,8 @@ variable "hashi_tags" {
 
   default = {
     "TTL"     = ""
-    "owner"   = ""
-    "project" = ""
+    "Owner"   = ""
+    "Project" = ""
   }
 }
 
@@ -18,17 +18,13 @@ variable "ssh_key_name" {
   description = "Name of existing AWS ssh key"
 }
 
-variable "route53_zone_id" {
-  description = "Route 53 zone into which to place hostnames"
-}
-
-variable "top_level_domain" {
-  description = "The top-level domain to put all Route53 records"
+variable "route53_subzone" {
+  description = "Route53 (sub)zone where host records will be created"
 }
 
 # Optional
 
-# Images in us-east-1, us-east-2, us-west-1 and us-west-2
+# Images in us-east-1 and us-west-2
 variable "aws_region" {
   description = "Region into which to deploy"
   default     = "us-west-2"

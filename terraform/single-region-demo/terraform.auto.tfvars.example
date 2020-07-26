@@ -5,23 +5,20 @@
 # cloud auto-join uses 'cluster name'
 
 # Unique Project Name
-project_name = "rpeteuil-consul-demo"
+project_name = "consul-demo"
 
 hashi_tags = {
-  "project" = "RPeteuil Consul Demo"
-  "owner"   = "rpeteuil@hashicorp.com"
+  "Project" = "MyExample Consul Demo"
+  "Owner"   = "user@example.com"
   "TTL"     = "12"
 }
 
+# Route53 (sub)zone where host records will be created
+route53_subzone = "demo.example.com"
+
 # AWS Keypair in Region - specifies key used when sshing to instance
 #   https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html
-ssh_key_name = "rpeteuil"
-
-# zone ID for TLD (ex: zone id for hashidemos.io)
-route53_zone_id = "ZZZZZZZZZZZZZZ"
-
-# TLD to register nodes and lb in
-top_level_domain = "test.example.com"
+ssh_key_name = "myuser"
 
 ### OPTIONAL 
 
