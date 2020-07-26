@@ -20,6 +20,8 @@ provider "aws" {
   alias  = "alt"
 }
 
+provider "random" {}
+
 # Create MAIN Consul Connect cluster
 module "cluster_main" {
   source = "../modules/consul-demo-cluster"
@@ -27,18 +29,15 @@ module "cluster_main" {
     aws = aws.main
   }
 
-  consul_dc        = var.consul_dc
-  consul_acl_dc    = var.consul_dc
-  vpc_netblock     = var.vpc_cidr_main
-  project_name     = var.project_name
-  top_level_domain = var.top_level_domain
-  route53_zone_id  = var.route53_zone_id
-  ssh_key_name     = var.ssh_key_name
-  consul_lic       = var.consul_lic
-  ami_owner        = var.ami_owner
-  ami_prefix       = var.ami_prefix
-
-  hashi_tags = var.hashi_tags
+  consul_dc       = var.consul_dc
+  consul_acl_dc   = var.consul_dc
+  vpc_netblock    = var.vpc_cidr_main
+  project_name    = var.project_name
+  ssh_key_name    = var.ssh_key_name
+  consul_lic      = var.consul_lic
+  ami_prefix      = var.ami_prefix
+  route53_subzone = var.route53_subzone
+  hashi_tags      = var.hashi_tags
 }
 
 # Create ALTERNATE Consul Connect cluster
@@ -48,18 +47,15 @@ module "cluster_alt" {
     aws = aws.alt
   }
 
-  consul_dc        = var.consul_dc_alt
-  consul_acl_dc    = var.consul_dc
-  vpc_netblock     = var.vpc_cidr_alt
-  project_name     = var.project_name
-  top_level_domain = var.top_level_domain
-  route53_zone_id  = var.route53_zone_id
-  ssh_key_name     = var.ssh_key_name
-  consul_lic       = var.consul_lic
-  ami_owner        = var.ami_owner
-  ami_prefix       = var.ami_prefix
-
-  hashi_tags = var.hashi_tags
+  consul_dc       = var.consul_dc_alt
+  consul_acl_dc   = var.consul_dc
+  vpc_netblock    = var.vpc_cidr_alt
+  project_name    = var.project_name
+  ssh_key_name    = var.ssh_key_name
+  consul_lic      = var.consul_lic
+  ami_prefix      = var.ami_prefix
+  route53_subzone = var.route53_subzone
+  hashi_tags      = var.hashi_tags
 }
 
 # Link VPCs
