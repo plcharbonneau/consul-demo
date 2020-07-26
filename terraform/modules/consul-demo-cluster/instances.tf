@@ -11,8 +11,15 @@ data "aws_ami" "consul" {
   }
 }
 
+resource "random_pet" "cluster" {
+  length = 1
+  keepers = {
+    ami_id = data.aws_ami.consul.id
+  }
+}
+
 resource "aws_instance" "consul" {
-  ami                         = data.aws_ami.consul.id
+  ami                         = random_pet.cluster.keepers.ami_id
   count                       = var.consul_servers_count
   instance_type               = var.server_machine_type
   key_name                    = var.ssh_key_name
@@ -25,7 +32,7 @@ resource "aws_instance" "consul" {
   tags = merge(var.hashi_tags,
     { "Name" = "${local.unique_proj_id}-consul-server" },
     { "role" = "consul-server" },
-    { "consul-cluster-name" = replace("consul-cluster-${local.unique_proj_id}-${var.hashi_tags["owner"]}", " ", "", ) },
+    { "consul-cluster-name" = replace("consul-cluster-${local.unique_proj_id}-${random_pet.cluster.id}", " ", "", ) },
     { "consul-cluster-dc-name" = var.consul_dc },
     { "consul-cluster-acl-dc-name" = var.consul_acl_dc },
   )
@@ -55,7 +62,7 @@ resource "aws_instance" "webclient" {
   tags = merge(var.hashi_tags,
     { "Name" = "${local.unique_proj_id}-webclient-server-${count.index}" },
     { "role" = "webclient-server" },
-    { "consul-cluster-name" = replace("consul-cluster-${local.unique_proj_id}-${var.hashi_tags["owner"]}", " ", "", ) },
+    { "consul-cluster-name" = replace("consul-cluster-${local.unique_proj_id}-${random_pet.cluster.id}", " ", "", ) },
     { "consul-cluster-dc-name" = var.consul_dc },
     { "consul-cluster-acl-dc-name" = var.consul_acl_dc },
   )
@@ -87,7 +94,7 @@ resource "aws_instance" "listing-api" {
   tags = merge(var.hashi_tags,
     { "Name" = "${local.unique_proj_id}-listing-api-server-${count.index}" },
     { "role" = "listing-api-server" },
-    { "consul-cluster-name" = replace("consul-cluster-${local.unique_proj_id}-${var.hashi_tags["owner"]}", " ", "", ) },
+    { "consul-cluster-name" = replace("consul-cluster-${local.unique_proj_id}-${random_pet.cluster.id}", " ", "", ) },
     { "consul-cluster-dc-name" = var.consul_dc },
     { "consul-cluster-acl-dc-name" = var.consul_acl_dc },
   )
@@ -119,7 +126,7 @@ resource "aws_instance" "product-api" {
   tags = merge(var.hashi_tags,
     { "Name" = "${local.unique_proj_id}-product-api-server-${count.index}" },
     { "role" = "product-api-server" },
-    { "consul-cluster-name" = replace("consul-cluster-${local.unique_proj_id}-${var.hashi_tags["owner"]}", " ", "", ) },
+    { "consul-cluster-name" = replace("consul-cluster-${local.unique_proj_id}-${random_pet.cluster.id}", " ", "", ) },
     { "consul-cluster-dc-name" = var.consul_dc },
     { "consul-cluster-acl-dc-name" = var.consul_acl_dc },
   )
@@ -151,7 +158,7 @@ resource "aws_instance" "mongo" {
   tags = merge(var.hashi_tags,
     { "Name" = "${local.unique_proj_id}-mongo-server-${count.index}" },
     { "role" = "mongo-server" },
-    { "consul-cluster-name" = replace("consul-cluster-${local.unique_proj_id}-${var.hashi_tags["owner"]}", " ", "", ) },
+    { "consul-cluster-name" = replace("consul-cluster-${local.unique_proj_id}-${random_pet.cluster.id}", " ", "", ) },
     { "consul-cluster-dc-name" = var.consul_dc },
     { "consul-cluster-acl-dc-name" = var.consul_acl_dc },
   )
