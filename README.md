@@ -47,7 +47,7 @@ This repo can be used to show Consul service discovery, Consul Connect, intentio
 
 ### AWS AMIs
 
-- AWS AMIs are available in HC account in `us-east-1`, `us-east-2`, `us-west-1` and `us-west-2`
+- AWS AMIs are available in HC account in `us-east-1` and `us-west-2`
 - To customize AMIs view the [Packer README](./packer/README.md)
 
 ## First Time Setup
