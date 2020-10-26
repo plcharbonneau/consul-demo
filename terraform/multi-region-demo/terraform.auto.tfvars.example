@@ -1,16 +1,18 @@
 # Rename this to `terraform.auto.tfvars` and edit.
 # Set all of variables.
 
-# 'project_name' and 'hashi_tags["owner"]' are combined to set Consul 'cluster name'
-# cloud auto-join uses 'cluster name'
-
-# Unique Project Name
+# Ensure project name variable is unique
+#   Used during cloud auto-join
 project_name = "consul-demo"
 
 hashi_tags = {
-  "Project" = "MyExample Consul Demo"
-  "Owner"   = "user@example.com"
-  "TTL"     = "12"
+  "Project"   = "MyExample Consul Demo"
+  "Owner"     = "user@example.com"
+  "TTL"       = "4"
+  "Region"    = "NA-US"
+  "Purpose"   = "Consul Demo"
+  "Terraform" = "true"
+  "TFE"       = "false"
 }
 
 # Route53 (sub)zone where host records will be created
@@ -31,10 +33,10 @@ ssh_key_name = "myuser"
 # ssh_pri_key_file - file URL to private key file (does not work with TFC/TFE)
 ssh_pri_key_file = "~/.ssh/id_rsa"
 
-### OPTIONAL 
-
 # Consul Enterprise License Key
 # consul_lic = "consul-enterprise-license-string-here"
+
+### OPTIONAL 
 
 # Main Consul Cluster region and DC Name
 # aws_region = "us-west-2"

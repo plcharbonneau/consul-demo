@@ -1,16 +1,19 @@
 # Rename this to `terraform.auto.tfvars` and edit.
 # Set all of variables.
 
-# 'project_name' and 'hashi_tags["owner"]' are combined to set Consul 'cluster name'
-# cloud auto-join uses 'cluster name'
 
-# Unique Project Name
+# Ensure project name variable is unique
+#   Used during cloud auto-join
 project_name = "consul-demo"
 
 hashi_tags = {
-  "Project" = "MyExample Consul Demo"
-  "Owner"   = "user@example.com"
-  "TTL"     = "12"
+  "Project"   = "MyExample Consul Demo"
+  "Owner"     = "user@example.com"
+  "TTL"       = "4"
+  "Region"    = "NA-US"
+  "Purpose"   = "Consul Demo"
+  "Terraform" = "true"
+  "TFE"       = "false"
 }
 
 # Route53 (sub)zone where host records will be created
@@ -20,10 +23,10 @@ route53_subzone = "demo.example.com"
 #   https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html
 ssh_key_name = "myuser"
 
-### OPTIONAL 
-
 # Consul Enterprise License Key (if exists)
 # consul_lic = "consul-enterprise-license-string-here"
+
+### OPTIONAL 
 
 # Consul Cluster region and DC Name
 # aws_region = "us-west-2"
