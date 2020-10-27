@@ -6,21 +6,21 @@
         "aws_access_key": "{{ env `AWS_ACCESS_KEY` }}",
         "aws_secret_key": "{{ env `AWS_SECRET_KEY` }}",
         "aws_region": "{{ env `AWS_REGION` }}",
-        "role": "consul-client-listing",
+        "role": "consul-server",
         "ami_owner": "{{ env `AMI_OWNER` }}",
         "ami_prefix": "{{ env `AMI_PREFIX` }}",
         "owner_tag": "{{ env `OWNER_TAG` }}",
         "proj_suffix_tag": "{{ env `PROJ_SUFFIX` }}",
-        "type": "{{ env `NODE_TYPE` }}",
+        "type": "server",
         "consul_version": "{{ env `CONSUL_VER` }}",
         "build_date": "{{ env `BUILD_DATE` }}"
     },
     "builders": [{
-            "image_name": "{{ user `ami_prefix` }}-consul-{{ user `type` }}-listing",
+            "image_name": "{{ user `ami_prefix` }}-consul-{{ user `type` }}",
             "type": "googlecompute",
             "account_file": "{{ user `gcp_account_file` }}",
             "project_id": "{{ user `gcp_project_id` }}",
-            "source_image": "{{ user `ami_prefix` }}-consul-client",
+            "source_image": "{{ user `ami_prefix` }}-consul-base",
             "ssh_username": "ubuntu",
             "machine_type": "n1-standard-1",
             "zone": "{{ user `gcp_zone` }}",
@@ -42,9 +42,9 @@
             },
             "instance_type": "t2.micro",
             "ssh_username": "ubuntu",
-            "ami_name": "{{ user `ami_prefix` }}-listing-server-{{ user `build_date` }}",
+            "ami_name": "{{ user `ami_prefix` }}-consul-server-{{ user `build_date` }}",
             "tags": {
-                "Name": "Consul Demo Ubuntu Listing Server",
+                "Name": "Consul Demo Ubuntu Consul Server",
                 "owner": "{{ user `owner_tag` }}",
                 "project": "Consul Demo {{ user `proj_suffix_tag` }}",
                 "Base_AMI_Name": "{{ .SourceAMIName }}",
@@ -56,43 +56,16 @@
     ],
     "provisioners": [{
             "type": "file",
-            "source": "files/install_node.sh",
-            "destination": "/tmp/install_node.sh"
-        },
-        {
-            "type": "file",
-            "source": "services/listing.hcl",
-            "destination": "/tmp/listing.hcl"
-        },
-        {
-            "type": "file",
-            "source": "files/listing.service",
-            "destination": "/tmp/listing.service"
-        },
-        {
-            "type": "file",
-            "source": "files/listing_proxy.service",
-            "destination": "/tmp/listing_proxy.service"
-        },
-        {
-            "type": "file",
-            "source": "demoscripts/listing/",
-            "destination": "/home/ubuntu"
+            "source": "files/server.hcl",
+            "destination": "/tmp/server.hcl"
         },
         {
             "type": "shell",
             "inline": [
-                "sudo chmod a+x /tmp/install_node.sh",
-                "sudo /tmp/install_node.sh",
-                "sudo rm -f /tmp/install_node.sh",
-                "sudo mv /tmp/listing.hcl /etc/consul/listing.hcl",
-                "sudo mv /tmp/listing.service /lib/systemd/system/listing.service",
-                "sudo mv /tmp/listing_proxy.service /lib/systemd/system/listing_proxy.service",
-                "sudo chown -R consul:consul /etc/consul",
+                "sleep 15",
+                "sudo mv /tmp/server.hcl /etc/consul/server.hcl",
                 "sudo systemctl daemon-reload",
-                "sudo systemctl enable consul",
-                "sudo systemctl enable listing.service",
-                "sudo systemctl enable listing_proxy.service",
+                "sudo systemctl enable consul.service",
                 "sudo rm -rf /opt/consul/*"
             ]
         }

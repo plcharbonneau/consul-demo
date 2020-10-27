@@ -22,19 +22,29 @@ route53_subzone = "demo.example.com"
 #   https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html
 ssh_key_name = "myuser"
 
+
+# Consul Enterprise License Key for Consul 1.8 (v2 license format)
+# consul_lic = "consul-enterprise-license-string-here"
+
+# If Consul License not provided
+#   Consul service will shutdown (on all hosts) in 30m
+#   Terraform will be unable to destroy the environment
+#   To repair demo environment if shutdown from non-license
+#     Reboot the hosts, or ssh and restart consul service on each
+
+## PRIVATE SSH KEY
+
 # Either "ssh_pri_key_data" or "ssh_pri_key_file" must be specified
 #   These refer to the Private SSH key specified in ssh_key_name variable
 #   They are used by a post provisioner to join counsul datacenters
+
+# ssh_pri_key_file - file URL to private key file
+ssh_pri_key_file = "~/.ssh/id_rsa"
 
 # ssh_pri_key_data - contains contents of private key as data (required for TFC/TFE)
 #   remove newlines before populating: awk '{printf "%s\\n", $0}' ~/.ssh/id_rsa
 # ssh_pri_key_data = ""
 
-# ssh_pri_key_file - file URL to private key file (does not work with TFC/TFE)
-ssh_pri_key_file = "~/.ssh/id_rsa"
-
-# Consul Enterprise License Key
-# consul_lic = "consul-enterprise-license-string-here"
 
 ### OPTIONAL 
 
@@ -50,4 +60,4 @@ ssh_pri_key_file = "~/.ssh/id_rsa"
 # ami_owner = "self"
 
 # AMI prefix name - set if custom AMI's created
-# ami_prefix = "consul-demo"
+# ami_prefix = "consul-demo-ent"

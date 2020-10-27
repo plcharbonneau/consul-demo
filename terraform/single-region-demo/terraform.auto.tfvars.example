@@ -23,8 +23,16 @@ route53_subzone = "demo.example.com"
 #   https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html
 ssh_key_name = "myuser"
 
-# Consul Enterprise License Key (if exists)
+
+# Consul Enterprise License Key for Consul 1.8 (v2 license format)
 # consul_lic = "consul-enterprise-license-string-here"
+
+# If Consul License not provided
+#   Consul service will shutdown (on all hosts) in 30m
+#   Terraform will be unable to destroy the environment
+#   To repair demo environment if shutdown from non-license
+#     Reboot the hosts, or ssh and restart consul service on each
+
 
 ### OPTIONAL 
 
@@ -36,4 +44,4 @@ ssh_key_name = "myuser"
 # ami_owner = "self"
 
 # AMI prefix name - set if custom AMI's created
-# ami_prefix = "consul-demo"
+# ami_prefix = "consul-demo-ent"

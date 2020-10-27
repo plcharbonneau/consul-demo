@@ -66,7 +66,7 @@ variable "ami_owner" {
 
 variable "ami_prefix" {
   description = "prefix of AMI images to use when building instances"
-  default     = "consul-demo"
+  default     = "consul-demo-ent"
 }
 
 variable "consul_lic" {
