@@ -81,14 +81,14 @@ module "link_vpc" {
 provider "consul" {
   alias = "main"
 
-  address    = "${element(module.cluster_main.consul_servers, 0)}:8500"
+  address    = length(module.cluster_main.consul_servers) > 0 ? "${element(module.cluster_main.consul_servers, 0)}:8500" : null
   datacenter = module.cluster_main.consul_dc
 }
 
 provider "consul" {
   alias = "alt"
 
-  address    = "${element(module.cluster_alt.consul_servers, 0)}:8500"
+  address    = length(module.cluster_alt.consul_servers) > 0 ? "${element(module.cluster_alt.consul_servers, 0)}:8500" : null
   datacenter = module.cluster_alt.consul_dc
 }
 

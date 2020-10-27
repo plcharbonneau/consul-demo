@@ -5,6 +5,8 @@
 #
 # requires TFH utility: https://github.com/hashicorp-community/tf-helper
 
+echo "deploying demo with TFC/TFE depricated, please use CLI"
+exit 0
 
 ### USER VARIABLES
 

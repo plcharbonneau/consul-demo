@@ -1,6 +1,6 @@
 # Consul Demo
 
-This repo can be used to show Consul service discovery, Consul Connect, intentions and service failover between datacenters (via prepared query)
+This repo can be used to show Consul service discovery, Consul Connect using built in Proxy, intentions and service failover between datacenters (via prepared query)
 
 ## Overview
 
@@ -9,13 +9,11 @@ This repo can be used to show Consul service discovery, Consul Connect, intentio
 - Single Region - located in `terraform/single-region-demo`
   - demonstrates: service discovery, Consul Connect, and intentions
 - Multi Region - located in `terraform/multi-region-demo`
-  - demonstrates: service discovery, Consul Connect, intentions and service failover between datacenters using a prepared query
+  - demonstrates: everything in Single Region + service failover between datacenters using a prepared query
 
 ### Branches
 
-- `main` - primary branch - Terraform 0.12.x compatible code
-- `terraform-0.11` - Terraform 0.11 compatible code - for use with TFC/TFE
-  - requires setting TFC/TFE workspace to use Terraform 0.11.14
+- `main` - primary branch - Terraform 0.12/0.13 compatible code
 
 ### Architecture & Diagrams
 
@@ -36,8 +34,8 @@ This repo can be used to show Consul service discovery, Consul Connect, intentio
 ### Requirements
 
 - AWS account & credentials
-- AWS Route53 Hosted Zone ID
-  - Terraform creates FQDNs for instances & load balancers
+- AWS Route53 Subzone (that you have write permissions to)
+  - Terraform will create FQDNs for instances & load balancers in this subzone
 - Consul Enterprise License (Highly Recommended)
   - If not specified - Consul Enterprise demo-binary will shutdown in 30m
   - After no-license shutdown
@@ -60,18 +58,6 @@ This repo can be used to show Consul service discovery, Consul Connect, intentio
 - Make a copy of the example variables file
   - `cp terraform.auto.tfvars.example terraform.auto.tfvars`
 - Edit `terraform.auto.tfvars` and set values as described in comments
-
-### Setup Terraform Cloud/Enterprise Workspaces
-
-- Fork this repo
-- Make a copy of the script [reference/setup-tfe-example.sh](.reference/setup-tfe-example.sh) and name it `setup-tfe.sh`
-  - populate Variables in script
-    - configure TFC/TFE organization
-    - specify your repo and `demo` as branch
-    - specify workspaces names for `single-region-demo` and `multi-region-demo`
-      - script sets working directory for each workspace
-    - configure other variables - see `terraform.auto.tfvars.example` for descriptions
-- Run `setup-tfe.sh` to create TFC/TFE workspaces with VCS connections and populated variables
 
 ### Multi-Region Demo Notes
 

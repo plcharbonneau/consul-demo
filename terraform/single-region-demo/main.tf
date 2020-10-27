@@ -31,7 +31,7 @@ module "cluster_main" {
 
 # Configure Prepared Query on Main Consul Cluster
 provider "consul" {
-  address    = "${element(module.cluster_main.consul_servers, 0)}:8500"
+  address    = length(module.cluster_main.consul_servers) > 0 ? "${element(module.cluster_main.consul_servers, 0)}:8500" : null
   datacenter = module.cluster_main.consul_dc
 }
 
