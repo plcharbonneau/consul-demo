@@ -41,7 +41,7 @@ resource "aws_route53_record" "webclient_a_records" {
 # Webclient LB DNS Entry
 resource "aws_route53_record" "webclient_lb_a_record" {
   zone_id = data.aws_route53_zone.subzone.zone_id
-  name    = "${var.consul_dc}.${var.route53_subzone}"
+  name    = "webclient.${var.consul_dc}.${var.route53_subzone}"
   type    = "A"
 
   alias {
