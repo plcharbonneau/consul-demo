@@ -4,7 +4,7 @@ terraform {
   required_version = ">= 0.12.4"
 
   required_providers {
-    aws    = "= 2.33"
+    aws    = "~> 2.33"
     consul = "~> 2.5"
   }
 }
