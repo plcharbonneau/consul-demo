@@ -56,7 +56,7 @@
     ],
     "provisioners": [{
             "type": "file",
-            "source": "files/server.hcl",
+            "source": "files/server-oss.hcl",
             "destination": "/tmp/server.hcl"
         },
         {
