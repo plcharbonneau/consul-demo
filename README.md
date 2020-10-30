@@ -36,20 +36,17 @@ This repo can be used to show Consul service discovery, Consul Connect using bui
 - AWS account & credentials
 - AWS Route53 Subzone (that you have write permissions to)
   - Terraform will create FQDNs for instances & load balancers in this subzone
-- Consul Enterprise License is no longer required
+- Consul Enterprise License not required
 
 ### AWS AMIs
 
-- AWS AMIs are available in HC account in `us-east-1`, `us-west-2`, `ap-southeast-1` and `ap-southeast-2`
-  - AMI default prefix `consul-into`
-    - changed when OSS AMIs were added to avoid mis-matches
-- To customize AMIs view [Packer README](./packer/README.md)
-- Consul Enterprise AMIs available in us-west-2 and east-1
-  - use these AMIs by setting Terraform vars
+- AWS AMIs are available in HC account in `us-east-1`, `us-west-1`, `us-west-2`, `ap-southeast-1` and `ap-southeast-2`
+- Customize AMIs via info in [Packer README](./packer/README.md)
+- Consul Enterprise AMIs published in us-west-2 and us-east-1 
+  - use them by setting Terraform vars
     - `ami_prefix = "consul-demo-ent"`
     - `consul_lic = "CONSUL-ENT-LICENSE-v2-TEXT"`
-  - published
-    - See [Packer README](./packer/README.md) to publish to other regions
+  - See [Packer README](./packer/README.md) to build & publish to other regions
 
 ## First Time Setup
 
