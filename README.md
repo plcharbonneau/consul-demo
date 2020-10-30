@@ -40,7 +40,7 @@ This repo can be used to show Consul service discovery, Consul Connect using bui
 
 ### AWS AMIs
 
-- AWS AMIs are available in HC account in `us-east-1`, `us-west-1`, `us-west-2`, `ap-southeast-1` and `ap-southeast-2`
+- AWS AMIs are available in HC account in `us-east-1`, `us-east-2`, `us-west-1`, `us-west-2`, `ap-southeast-1` and `ap-southeast-2`
 - Customize AMIs via info in [Packer README](./packer/README.md)
 - Consul Enterprise AMIs published in us-west-2 and us-east-1 
   - use them by setting Terraform vars
