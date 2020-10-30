@@ -105,7 +105,7 @@
         {
             "type": "shell",
             "inline": [
-                "curl -o /tmp/consul.zip https://releases.hashicorp.com/consul/{{ user `consul_version` }}%2Bent/consul_{{ user `consul_version` }}%2Bent_linux_amd64.zip"
+                "curl -o /tmp/consul.zip https://releases.hashicorp.com/consul/{{ user `consul_version` }}/consul_{{ user `consul_version` }}_linux_amd64.zip"
             ]
         },
         {
