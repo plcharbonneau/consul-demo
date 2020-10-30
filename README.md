@@ -40,8 +40,8 @@ This repo can be used to show Consul service discovery, Consul Connect using bui
 
 ### AWS AMIs
 
-- AWS AMIs are available in HC account in `us-east-1` and `us-west-2`
-  - default prefix `consul-into`
+- AWS AMIs are available in HC account in `us-east-1`, `us-west-2`, `ap-southeast-1` and `ap-southeast-2`
+  - AMI default prefix `consul-into`
     - changed when OSS AMIs were added to avoid mis-matches
 - To customize AMIs view [Packer README](./packer/README.md)
 - Consul Enterprise AMIs available in us-west-2 and east-1
