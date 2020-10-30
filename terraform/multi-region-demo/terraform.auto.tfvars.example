@@ -3,7 +3,7 @@
 
 # Ensure project name variable is unique
 #   Used during cloud auto-join
-project_name = "consul-demo"
+project_name = "myname-consul-demo"
 
 hashi_tags = {
   "Project"   = "MyExample Consul Demo"
@@ -22,16 +22,6 @@ route53_subzone = "demo.example.com"
 #   https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html
 ssh_key_name = "myuser"
 
-
-# Consul Enterprise License Key for Consul 1.8 (v2 license format)
-# consul_lic = "consul-enterprise-license-string-here"
-
-# If Consul License not provided
-#   Consul service will shutdown (on all hosts) in 30m
-#   Terraform will be unable to destroy the environment
-#   To repair demo environment if shutdown from non-license
-#     Reboot the hosts, or ssh and restart consul service on each
-
 ## PRIVATE SSH KEY
 
 # Either "ssh_pri_key_data" or "ssh_pri_key_file" must be specified
@@ -43,7 +33,16 @@ ssh_pri_key_file = "~/.ssh/id_rsa"
 
 # ssh_pri_key_data - contains contents of private key as data (required for TFC/TFE)
 #   remove newlines before populating: awk '{printf "%s\\n", $0}' ~/.ssh/id_rsa
-# ssh_pri_key_data = ""
+# ssh_pri_key_data = "PRIVATE KEY DATA"
+
+
+### OPTIONAL CUSTOM AMI 
+
+# Custom AMI prefix name - set if custom AMI's created
+# ami_prefix = "consul-intro"
+
+# If AMIs use Consul Ent, specify ent license
+# consul_lic = "LICENSE-TEXT"
 
 
 ### OPTIONAL 
@@ -58,6 +57,3 @@ ssh_pri_key_file = "~/.ssh/id_rsa"
 
 # Account of AMI (defaults to self)
 # ami_owner = "self"
-
-# AMI prefix name - set if custom AMI's created
-# ami_prefix = "consul-demo-ent"

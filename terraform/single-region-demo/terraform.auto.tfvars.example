@@ -4,7 +4,7 @@
 
 # Ensure project name variable is unique
 #   Used during cloud auto-join
-project_name = "consul-demo"
+project_name = "myname-consul-demo"
 
 hashi_tags = {
   "Project"   = "MyExample Consul Demo"
@@ -24,24 +24,24 @@ route53_subzone = "demo.example.com"
 ssh_key_name = "myuser"
 
 
-# Consul Enterprise License Key for Consul 1.8 (v2 license format)
-# consul_lic = "consul-enterprise-license-string-here"
+### OPTIONAL CUSTOM AMI 
 
-# If Consul License not provided
-#   Consul service will shutdown (on all hosts) in 30m
-#   Terraform will be unable to destroy the environment
-#   To repair demo environment if shutdown from non-license
-#     Reboot the hosts, or ssh and restart consul service on each
+# Custom AMI prefix name - set if custom AMI's created
+# ami_prefix = "consul-intro"
+
+# If AMIs use Consul Ent, specify ent license
+# consul_lic = "LICENSE-TEXT"
 
 
 ### OPTIONAL 
 
-# Consul Cluster region and DC Name
+# Main Consul Cluster region and DC Name
 # aws_region = "us-west-2"
-# consul_dc  = "dc1"
+# consul_dc = "dc1"
+
+# Alternate Consul Cluster region and unique DC Name
+# aws_region_alt = "us-east-1"
+# consul_dc_alt = "dc2"
 
 # Account of AMI (defaults to self)
 # ami_owner = "self"
-
-# AMI prefix name - set if custom AMI's created
-# ami_prefix = "consul-demo-ent"

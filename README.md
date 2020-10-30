@@ -36,17 +36,20 @@ This repo can be used to show Consul service discovery, Consul Connect using bui
 - AWS account & credentials
 - AWS Route53 Subzone (that you have write permissions to)
   - Terraform will create FQDNs for instances & load balancers in this subzone
-- Consul Enterprise License (Highly Recommended)
-  - If not specified - Consul Enterprise demo-binary will shutdown in 30m
-  - After no-license shutdown
-    - demo will no longer work and `terraform destroy` will fail
-    - fix by rebooting each host (or restart consul service on each host)
-      - this re-starts Consul as Open Source Consul
+- Consul Enterprise License is no longer required
 
 ### AWS AMIs
 
 - AWS AMIs are available in HC account in `us-east-1` and `us-west-2`
-- To customize AMIs view the [Packer README](./packer/README.md)
+  - default prefix `consul-into`
+    - changed when OSS AMIs were added to avoid mis-matches
+- To customize AMIs view [Packer README](./packer/README.md)
+- Consul Enterprise AMIs available in us-west-2 and east-1
+  - use these AMIs by setting Terraform vars
+    - `ami_prefix = "consul-demo-ent"`
+    - `consul_lic = "CONSUL-ENT-LICENSE-v2-TEXT"`
+  - published
+    - See [Packer README](./packer/README.md) to publish to other regions
 
 ## First Time Setup
 
@@ -68,8 +71,8 @@ This repo can be used to show Consul service discovery, Consul Connect using bui
 - Set Terraform variables (in `terraform.auto.tfvars` or `setup-tfe.sh`)
   - `ssh_key_name` - must exist in both AWS regions (default: us-west-2 & us-east-1)
   - Specify either `ssh_pri_key_data` or `ssh_pri_key_file` that refers to private SSH key referenced by `ssh_key_name`
-    - `ssh_pri_key_file` - file path to the private key (does not work with TFC/TFE)
-    - `ssh_pri_key_data` - contents of private key as data with newlines replaced with `\n` (required for TFC/TFE)
+    - `ssh_pri_key_file` - file path to the private key
+    - `ssh_pri_key_data` - contents of private key as data with newlines replaced with `\n`
       - remove newlines with command: `awk '{printf "%s\\n", $0}' ~/.ssh/id_rsa`
 
 ## Demo Script
@@ -78,11 +81,14 @@ This repo can be used to show Consul service discovery, Consul Connect using bui
 
 - Deploy with Terraform (takes 3-4 minutes)
 - (OPTIONAL) add aliases from Terraform output `working_aliases` to .bash_profile
-  - eliminates need to remove keys from known_hosts before each demo
+  - This eliminates need to remove known_hosts entries after each demo
 - (OPTIONAL) bookmark web URLs specified in Terraform output `working connections`
 - Edit `~/.ssh/known_hosts` and remove entries from previous demos (unless using ssh aliases)
+
+### Setup Browser
+
 - Follow instruction in Terraform output `working connections`
-  - Open two URL's in Browser
+  - Open two specified URL's in Browser
     - web-page rendered by `web_client` service
     - Consul UI
 - Verify the all services are running in Consul UI
